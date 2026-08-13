@@ -1,0 +1,861 @@
+<!doctype html>
+<html lang="mn">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0c2430" />
+  <meta name="application-name" content="Удмын Хүлэг" />
+  <meta name="description" content="Гэр бүлийн адууны бүртгэл, удам, сүрэг, тамгалалт, зураг болон уралдааны амжилтын хувийн cloud систем." />
+  <title>Удмын Хүлэг — Гэр бүлийн адууны удмын сан</title>
+  <style>
+:root{
+  --ink:#10202a;--navy:#0b2732;--navy-2:#123a46;--paper:#f5f1e8;--card:#fffdf8;
+  --bronze:#b68347;--bronze-2:#d8b176;--line:#dfd8ca;--muted:#6f7777;--green:#376b58;
+  --red:#a44b42;--shadow:0 18px 45px rgba(14,32,42,.09);--radius:20px;
+}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;background:var(--paper);color:var(--ink)}
+button,input,select,textarea{font:inherit}button{cursor:pointer}.app-shell{display:flex;min-height:100vh}
+.sidebar{width:278px;background:linear-gradient(180deg,#0a2631,#0b2029 70%,#091c23);color:#f9f5eb;padding:24px 18px 18px;display:flex;flex-direction:column;position:fixed;inset:0 auto 0 0;z-index:20;box-shadow:10px 0 40px rgba(2,17,24,.13)}
+.sidebar:before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.055;background-image:linear-gradient(45deg,transparent 42%,#fff 43% 47%,transparent 48%),linear-gradient(-45deg,transparent 42%,#fff 43% 47%,transparent 48%);background-size:46px 46px}
+.brand{display:flex;gap:13px;align-items:center;padding:4px 8px 24px;position:relative}.brand-mark{width:45px;height:45px;border:1px solid rgba(216,177,118,.7);border-radius:15px;color:var(--bronze-2);display:grid;place-items:center;background:rgba(255,255,255,.035)}.brand-mark svg{width:33px;height:33px}.brand-title{font-weight:900;letter-spacing:.12em;font-size:15px}.brand-subtitle{font-size:10px;opacity:.62;margin-top:4px;letter-spacing:.02em}
+.nav-list{display:flex;flex-direction:column;gap:5px;position:relative}.nav-item{width:100%;display:flex;align-items:center;gap:13px;border:0;background:transparent;color:rgba(255,255,255,.68);border-radius:13px;padding:12px 13px;text-align:left;transition:.18s}.nav-item span{font-size:18px;width:22px;text-align:center;color:#d6bb8d}.nav-item b{font-size:13px;font-weight:650}.nav-item:hover,.nav-item.active{background:rgba(255,255,255,.085);color:#fff}.nav-item.active{box-shadow:inset 3px 0 0 var(--bronze-2)}.sidebar-bottom{margin-top:auto;position:relative}.user-card{margin-top:12px;border-top:1px solid rgba(255,255,255,.09);padding:18px 6px 2px;display:flex;align-items:center;gap:10px}.avatar{width:38px;height:38px;border-radius:50%;background:#d4ad73;color:#17313a;display:grid;place-items:center;font-weight:850;font-size:12px}.user-meta{display:flex;flex-direction:column;min-width:0;flex:1}.user-meta strong{font-size:12px}.user-meta small{font-size:10px;opacity:.58;margin-top:3px}.icon-button{width:34px;height:34px;border:0;border-radius:11px;background:rgba(255,255,255,.07);color:inherit;font-size:19px}
+.main{margin-left:278px;min-width:0;flex:1}.topbar{height:76px;background:rgba(245,241,232,.88);backdrop-filter:blur(18px);display:flex;align-items:center;gap:18px;padding:0 34px;position:sticky;top:0;z-index:15;border-bottom:1px solid rgba(184,167,143,.23)}.mobile-menu{display:none;border:0;background:transparent;font-size:24px}.search-wrap{height:42px;border:1px solid #ddd5c8;background:rgba(255,255,255,.66);border-radius:13px;display:flex;align-items:center;gap:9px;padding:0 13px;max-width:610px;flex:1}.search-wrap span{color:#8d8f89;font-size:20px}.search-wrap input{border:0;outline:0;background:transparent;width:100%;font-size:13px;color:#24343b}.top-actions{margin-left:auto;display:flex;gap:9px}.primary-btn,.ghost-btn,.secondary-btn{border-radius:12px;padding:11px 15px;font-weight:750;font-size:12px;border:1px solid transparent}.primary-btn{background:var(--navy);color:#fff;box-shadow:0 8px 20px rgba(11,39,50,.16)}.ghost-btn{background:#fffaf1;border-color:#ded5c5;color:#445055}.secondary-btn{background:#f1e8d9;border-color:#e0cfb5;color:#674a2c}.danger-btn{border-radius:12px;padding:11px 15px;font-weight:750;font-size:12px;border:1px solid #e0b8b5;background:#fff0ef;color:#9b3737}.restore-btn{border-radius:12px;padding:11px 15px;font-weight:750;font-size:12px;border:1px solid #b7d7c3;background:#edf7f1;color:#32634a}.deleted-banner{border:1px solid #e2b9b6;background:#fff3f1;color:#8f4540;padding:13px 15px;border-radius:14px;font-size:11px;line-height:1.6}.admin-lock{display:inline-flex;align-items:center;gap:6px;padding:5px 8px;border-radius:8px;background:#efe8dd;color:#765c3d;font-size:9px;font-weight:800}.deleted-preview{height:220px;border-radius:16px;background:linear-gradient(155deg,#6e8587,#1c3740);background-size:cover;background-position:center;display:grid;place-items:center;color:rgba(255,255,255,.2);font-size:90px;margin-bottom:16px}
+.content{padding:31px 34px 70px;max-width:1560px;margin:0 auto}.eyebrow{font-size:10px;font-weight:850;letter-spacing:.18em;color:var(--bronze);text-transform:uppercase}.page-head{display:flex;align-items:end;justify-content:space-between;gap:20px;margin-bottom:25px}.page-title h1{margin:5px 0 7px;font-size:31px;letter-spacing:-.035em}.page-title p{margin:0;color:var(--muted);font-size:13px}.date-pill{background:#ebe3d4;border:1px solid #ded2bf;padding:10px 13px;border-radius:12px;font-size:11px;color:#6f5c45}.stats-grid{display:grid;grid-template-columns:repeat(5,minmax(130px,1fr));gap:13px;margin-bottom:22px}.stat-card{background:rgba(255,253,248,.92);border:1px solid #e5ded1;border-radius:17px;padding:18px;box-shadow:0 8px 26px rgba(40,35,25,.035)}.stat-top{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:11px}.stat-icon{width:29px;height:29px;border-radius:10px;display:grid;place-items:center;background:#f1e8d8;color:#966b3d}.stat-value{font-size:28px;font-weight:900;margin:13px 0 2px;letter-spacing:-.03em}.stat-sub{font-size:10px;color:#80908a}.trend{color:var(--green);font-weight:800}
+.grid-2{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(310px,.72fr);gap:18px}.panel{background:rgba(255,253,248,.94);border:1px solid #e5ded2;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}.panel-head{padding:18px 20px;border-bottom:1px solid #ece5d9;display:flex;align-items:center;justify-content:space-between}.panel-head h2{font-size:15px;margin:0}.panel-head small{color:var(--muted)}.text-link{border:0;background:none;color:#8e6539;font-size:11px;font-weight:800}.herd-list{padding:10px}.herd-row{display:grid;grid-template-columns:62px 1fr auto;gap:14px;align-items:center;padding:11px;border-radius:15px;transition:.15s}.herd-row:hover{background:#f5efe5}.horse-thumb{width:62px;height:50px;border-radius:12px;display:grid;place-items:center;color:#fff;font-size:25px;background:linear-gradient(145deg,#3a5a62,#172f38);position:relative;overflow:hidden}.horse-thumb:after{content:"";position:absolute;width:50px;height:25px;border:1px solid rgba(255,255,255,.17);border-radius:50%;transform:rotate(-18deg)}.herd-row h3{font-size:13px;margin:0 0 4px}.herd-row p{margin:0;color:var(--muted);font-size:10px}.herd-count{text-align:right}.herd-count strong{display:block;font-size:15px}.herd-count small{font-size:9px;color:var(--muted)}
+.activity{padding:16px 18px}.activity-item{display:flex;gap:12px;padding:11px 0;border-bottom:1px dashed #e2dacb}.activity-item:last-child{border:0}.activity-dot{width:32px;height:32px;border-radius:11px;background:#ede5d6;display:grid;place-items:center;color:#8b653c}.activity-body{font-size:11px;line-height:1.55}.activity-body strong{display:block;font-size:11px}.activity-body small{color:#8d918f}.hero-banner{margin-top:18px;min-height:160px;border-radius:22px;background:linear-gradient(115deg,#173945,#0b252f 56%,#745534);color:#fff;position:relative;overflow:hidden;padding:26px 28px;display:flex;align-items:center}.hero-banner:after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 84% 28%,rgba(255,220,159,.28),transparent 24%),repeating-linear-gradient(135deg,transparent 0 28px,rgba(255,255,255,.026) 28px 30px)}.hero-copy{position:relative;z-index:2;max-width:560px}.hero-copy small{letter-spacing:.16em;color:#d7b881;font-weight:800}.hero-copy h2{font-family:Georgia,serif;font-size:25px;margin:8px 0}.hero-copy p{margin:0;color:rgba(255,255,255,.67);font-size:12px;line-height:1.65}.hero-horse{position:absolute;right:60px;bottom:-18px;font-size:130px;opacity:.18;filter:grayscale(1)}
+.cards-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.horse-card{background:#fffdf8;border:1px solid #e4ddd1;border-radius:19px;overflow:hidden;box-shadow:0 10px 30px rgba(37,28,19,.04);transition:.18s}.horse-card:hover{transform:translateY(-2px);box-shadow:0 14px 34px rgba(37,28,19,.08)}.horse-photo{height:148px;background:linear-gradient(155deg,#677b7d,#233e47);display:flex;align-items:end;padding:14px;color:#fff;position:relative;overflow:hidden}.horse-photo:before{content:"♞";font-size:105px;position:absolute;right:12px;bottom:-26px;opacity:.18}.horse-photo .tag{position:relative;z-index:2}.horse-card-body{padding:15px}.horse-card h3{margin:0 0 6px;font-size:14px}.horse-card p{margin:0;font-size:10px;color:var(--muted)}.tag{display:inline-flex;align-items:center;background:rgba(8,32,40,.73);backdrop-filter:blur(6px);color:#fff;border:1px solid rgba(255,255,255,.14);padding:5px 8px;border-radius:9px;font-size:9px}.card-footer{display:flex;justify-content:space-between;align-items:center;margin-top:13px;padding-top:12px;border-top:1px solid #eee7dc;font-size:9px;color:#807b72}.medal{font-weight:850;color:#8a6239}
+.toolbar{display:flex;gap:9px;align-items:center;margin-bottom:16px}.filter-chip{border:1px solid #ded6c9;background:#fffaf2;color:#606a6b;border-radius:12px;padding:9px 12px;font-size:10px;font-weight:700}.filter-chip.active{background:#183945;color:#fff;border-color:#183945}.toolbar .spacer{flex:1}.table-wrap{background:#fffdf8;border:1px solid #e2dbcf;border-radius:18px;overflow:auto}.data-table{width:100%;border-collapse:collapse;min-width:760px}.data-table th,.data-table td{text-align:left;padding:13px 15px;border-bottom:1px solid #eee7db;font-size:11px}.data-table th{font-size:9px;text-transform:uppercase;letter-spacing:.09em;color:#87877f;background:#faf6ee}.data-table tr:hover td{background:#fbf7ef}.mini-horse{display:flex;align-items:center;gap:9px}.mini-avatar{width:31px;height:31px;border-radius:10px;background:#25434d;color:#e4c99c;display:grid;place-items:center}.status{display:inline-block;padding:5px 7px;border-radius:8px;font-size:9px;font-weight:800}.status.ok{background:#e8f0eb;color:#3c6855}.status.race{background:#f3e7d4;color:#8b6132}.status.archived{background:#eeeae2;color:#777}
+.detail-layout{display:grid;grid-template-columns:360px minmax(0,1fr);gap:18px}.profile-card{background:#fffdf8;border:1px solid #e3dbcf;border-radius:22px;overflow:hidden;height:max-content}.profile-photo{height:300px;background:linear-gradient(155deg,#6e8587,#1c3740);position:relative;display:grid;place-items:center;color:rgba(255,255,255,.15);font-size:160px}.profile-photo .badge{position:absolute;top:16px;left:16px}.profile-body{padding:20px}.profile-body h1{font-size:24px;margin:0 0 6px}.profile-body>p{font-size:11px;color:var(--muted);margin:0 0 18px}.profile-actions{display:flex;gap:8px}.info-sections{display:flex;flex-direction:column;gap:17px}.info-panel{background:#fffdf8;border:1px solid #e3dbcf;border-radius:20px;padding:19px}.info-panel h2{font-size:14px;margin:0 0 15px}.info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}.info-item{background:#f7f2e9;border-radius:13px;padding:12px}.info-item small{display:block;color:#8a8a82;font-size:9px;margin-bottom:5px}.info-item strong{font-size:11px}.pedigree-box{display:grid;grid-template-columns:1fr 60px 1fr;align-items:center;gap:10px}.pedigree-parent{padding:13px;background:#f6f1e7;border:1px solid #e6ddcf;border-radius:14px}.pedigree-parent small{color:#8a8a82;font-size:9px}.pedigree-parent b{display:block;margin-top:5px}.pedigree-lines{text-align:center;color:#ad8352;font-size:25px}.foal-list{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.foal-item{display:flex;gap:10px;align-items:center;padding:10px;border:1px solid #e8dfd1;border-radius:13px}.foal-item .mini-avatar{flex:0 0 auto}.foal-item strong{font-size:10px}.foal-item small{font-size:9px;color:#898a83;display:block;margin-top:3px}.race-result{display:grid;grid-template-columns:52px 1fr auto;gap:12px;align-items:center;padding:12px;border-bottom:1px dashed #e6ddcf}.race-result:last-child{border:0}.place{width:48px;height:48px;border-radius:14px;background:#f1e5d2;display:grid;place-items:center;font-weight:900;color:#8a6238}.race-result strong{font-size:11px}.race-result p{font-size:9px;color:#888;margin:4px 0 0}.race-result time{font-size:9px;color:#999}
+.pedigree-tree{overflow:auto;padding:10px 4px 22px}.tree{display:flex;align-items:center;justify-content:center;min-width:820px;gap:38px}.gen{display:flex;flex-direction:column;gap:22px}.tree-card{width:175px;padding:12px;border-radius:15px;background:#fffdf8;border:1px solid #e2d9ca;box-shadow:0 8px 20px rgba(40,30,20,.04);position:relative}.tree-card strong{font-size:11px}.tree-card small{display:block;font-size:9px;color:#8b8a83;margin-top:4px}.tree-card.current{background:#183945;color:#fff;border-color:#183945}.tree-card.current small{color:rgba(255,255,255,.65)}
+.quick-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.quick-option{border:1px solid #e1d7c8;background:#faf5ec;border-radius:15px;padding:16px;text-align:left}.quick-option span{font-size:25px;display:block;color:#9b7041;margin-bottom:8px}.quick-option strong{font-size:11px;display:block}.quick-option small{font-size:9px;color:#888;line-height:1.5}.modal-backdrop{position:fixed;inset:0;background:rgba(5,18,23,.58);backdrop-filter:blur(6px);z-index:100;display:grid;place-items:center;padding:18px}.modal-backdrop[hidden]{display:none}.modal{width:min(670px,100%);max-height:92vh;overflow:auto;background:#fffdf8;border-radius:23px;box-shadow:0 30px 80px rgba(0,0,0,.22)}.modal-head{display:flex;justify-content:space-between;padding:22px 24px;border-bottom:1px solid #e8e0d4}.modal-head small{font-size:9px;letter-spacing:.16em;color:#a47846;font-weight:900}.modal-head h2{font-size:20px;margin:5px 0 0}.modal-head .icon-button{background:#f3ecdf;color:#6e6b64}.form-body{padding:22px 24px}.form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:13px}.field{display:flex;flex-direction:column;gap:6px}.field.full{grid-column:1/-1}.field label{font-size:9px;font-weight:800;color:#727873;letter-spacing:.03em}.field input,.field select,.field textarea{border:1px solid #ddd4c6;background:#fff;padding:11px 12px;border-radius:11px;outline:none;font-size:11px;color:#27363c}.field input:focus,.field select:focus,.field textarea:focus{border-color:#b38856;box-shadow:0 0 0 3px rgba(179,136,86,.1)}.form-actions{margin-top:19px;display:flex;justify-content:flex-end;gap:8px}.upload-box{border:1px dashed #cdbc9f;background:#faf4e8;border-radius:14px;padding:18px;text-align:center;color:#846b4f;font-size:10px}
+.login-layer{position:fixed;inset:0;z-index:200;background:#0a222c;display:grid;place-items:center;padding:22px;overflow:hidden}.login-layer.hidden{display:none}.login-bg{position:absolute;inset:0;background:radial-gradient(circle at 20% 20%,rgba(209,172,114,.17),transparent 28%),linear-gradient(115deg,rgba(255,255,255,.025),transparent 30%),repeating-linear-gradient(45deg,transparent 0 46px,rgba(255,255,255,.025) 46px 48px);opacity:.9}.login-bg:after{content:"♞";position:absolute;right:8%;bottom:-12%;font-size:54vw;color:rgba(255,255,255,.025);transform:rotate(-7deg)}.login-card{width:min(410px,100%);background:rgba(250,246,237,.97);border-radius:28px;padding:36px;position:relative;z-index:2;box-shadow:0 35px 90px rgba(0,0,0,.28);text-align:center}.login-ornament{position:absolute;left:50%;top:16px;transform:translateX(-50%);color:#c49a60;font-size:10px}.login-brand-mark{margin:4px auto 15px;color:#996c3b;width:58px;height:58px;border-color:#cab48e;background:#f2e8d8}.login-card h1{font-family:Georgia,serif;letter-spacing:.12em;font-size:23px;margin:0;color:#13343e}.login-card>p{font-size:11px;color:#777d79;margin:7px 0 25px}.login-card form{text-align:left;display:flex;flex-direction:column;gap:13px}.login-card label{font-size:9px;font-weight:800;color:#6c716e}.login-card input{width:100%;margin-top:6px;border:1px solid #d9cfbf;background:#fff;padding:12px;border-radius:11px;outline:none}.login-btn{margin-top:5px;border:0;border-radius:12px;background:#0d2d38;color:#fff;padding:13px;font-weight:800}.demo-note{display:block;margin-top:14px;color:#999;font-size:9px}.toast{position:fixed;right:24px;bottom:24px;background:#123741;color:#fff;border:1px solid rgba(255,255,255,.14);padding:12px 15px;border-radius:12px;font-size:10px;z-index:300;box-shadow:0 15px 35px rgba(0,0,0,.18);transform:translateY(20px);opacity:0;pointer-events:none;transition:.22s}.toast.show{transform:translateY(0);opacity:1}.empty-state{text-align:center;padding:60px 20px;color:#7c817e}.empty-state .big{font-size:44px;color:#c39a63}.empty-state h3{font-size:15px}.empty-state p{font-size:11px}
+@media(max-width:1120px){.stats-grid{grid-template-columns:repeat(3,1fr)}.cards-grid{grid-template-columns:repeat(2,1fr)}.detail-layout{grid-template-columns:310px 1fr}.info-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:860px){.sidebar{transform:translateX(-100%);transition:.22s}.sidebar.open{transform:translateX(0)}.main{margin-left:0}.mobile-menu{display:block}.topbar{padding:0 18px}.content{padding:23px 18px 80px}.grid-2{grid-template-columns:1fr}.stats-grid{grid-template-columns:repeat(2,1fr)}.detail-layout{grid-template-columns:1fr}.profile-photo{height:250px}.info-grid{grid-template-columns:repeat(2,1fr)}.hero-horse{right:10px}.top-actions .ghost-btn{display:none}}
+@media(max-width:560px){.topbar{height:67px;gap:9px}.search-wrap{height:39px}.top-actions span{display:none}.primary-btn{padding:10px 12px}.page-head{align-items:flex-start;flex-direction:column}.date-pill{display:none}.page-title h1{font-size:25px}.stats-grid{grid-template-columns:repeat(2,1fr);gap:9px}.stat-card{padding:14px}.stat-value{font-size:23px}.cards-grid{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.quick-grid{grid-template-columns:1fr}.info-grid{grid-template-columns:1fr 1fr}.foal-list{grid-template-columns:1fr}.content{padding-left:13px;padding-right:13px}.profile-photo{height:215px}.hero-banner{padding:21px}.hero-horse{font-size:95px}.login-card{padding:31px 22px}}
+/* v2.2 — secure Admin-only deleted archive + fixed private image URLs */
+.horse-photo.has-img,.profile-photo.has-img{background-size:cover;background-position:center;background-repeat:no-repeat;color:transparent}
+.horse-photo.has-img:before{display:none}.profile-photo.has-img .tag{color:#fff}
+.mini-avatar.photo{background-size:cover;background-position:center;color:transparent;border:1px solid #e4d9c8}
+.inline-create{margin-top:2px;padding:10px;border:1px dashed #d4c3a9;background:#fbf5e9;border-radius:12px;display:flex;flex-direction:column;gap:7px}.inline-create[hidden]{display:none}.inline-create small{font-size:8px;color:#8a7c68;line-height:1.45}.inline-two{display:grid;grid-template-columns:1fr 1fr;gap:7px}.inline-create input{background:#fffdf8!important}
+.checkbox-field{padding:10px 12px;background:#f7f0e5;border-radius:12px}.checkbox-field label{display:flex;align-items:center;gap:8px;font-size:10px!important}.checkbox-field input{width:auto}
+.upload-live{position:relative;display:flex;min-height:115px;align-items:center;justify-content:center;flex-direction:column;gap:5px;overflow:hidden;cursor:pointer;transition:.18s}.upload-live:hover{border-color:#a97b48;background:#f7eddd}.upload-live input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}.upload-live strong{font-size:11px}.upload-live small{font-size:8px;color:#9a8b74}.upload-icon{font-size:27px}.upload-preview{max-width:100%;max-height:220px;border-radius:11px;object-fit:cover;margin-top:7px}.upload-live.has-preview{padding:10px}.upload-live.has-preview .upload-icon{display:none}
+.panel-head.compact{padding:0 0 12px;border:0}.panel-head.compact h2{margin:0}
+.photo-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.photo-tile{height:115px;background-size:cover;background-position:center;border-radius:12px;position:relative;overflow:hidden}.photo-tile span{position:absolute;left:7px;bottom:7px;background:rgba(9,30,38,.72);color:#fff;padding:4px 6px;border-radius:7px;font-size:8px}
+.photo-gallery{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.gallery-photo{background:#fffdf8;border:1px solid #e4ddd1;border-radius:18px;overflow:hidden;box-shadow:0 10px 30px rgba(37,28,19,.04);cursor:pointer}.gallery-photo>div{height:190px;background-size:cover;background-position:center}.gallery-photo section{padding:13px}.gallery-photo b{font-size:11px;display:block}.gallery-photo span,.gallery-photo small{display:block;font-size:9px;color:#85837d;margin-top:4px}.gallery-photo small{line-height:1.45}
+.branding-stats{grid-template-columns:repeat(3,minmax(150px,1fr));max-width:760px}.branding-grid{display:flex;flex-direction:column;gap:14px}.branding-card{display:grid;grid-template-columns:135px 1fr;background:#fffdf8;border:1px solid #e2d9cb;border-radius:20px;overflow:hidden;box-shadow:0 10px 32px rgba(32,25,18,.045)}.branding-year{background:linear-gradient(145deg,#173844,#0c2731);color:#e5c18a;font-size:34px;font-family:Georgia,serif;font-weight:700;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:24px 15px}.branding-year small{font-family:inherit;font-size:9px;color:rgba(255,255,255,.62);margin-top:7px}.branding-content{padding:19px 21px}.branding-content h3{margin:0 0 5px;font-size:15px}.branding-content>p{margin:0 0 12px;color:#817b70;font-size:10px}.branding-tags{display:flex;flex-wrap:wrap;gap:6px}.branding-tags span{background:#f0e5d3;border:1px solid #e0ceb2;border-radius:999px;padding:5px 8px;font-size:8px;color:#725435}.branding-horses{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}.branding-horses button{border:1px solid #e3dbcf;background:#fff;border-radius:9px;padding:6px 8px;font-size:9px;color:#39464a}.branding-horses small{padding:6px;font-size:8px;color:#8d8a83}.branding-note{margin-top:12px;padding:9px 10px;border-left:3px solid #c2955f;background:#f8f2e9;font-size:9px;color:#756b5e}.branding-mini-list{margin-top:12px;border-top:1px dashed #ddd1c0;padding-top:8px;display:flex;flex-direction:column;gap:6px}.branding-mini-list>div{display:flex;justify-content:space-between;gap:12px;font-size:9px}.branding-mini-list small{color:#8c877d}
+.branding-check-actions{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:9px}.horse-check-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;max-height:290px;overflow:auto;padding:2px}.horse-check{display:flex;gap:8px;align-items:center;border:1px solid #e5ddd0;background:#fff;border-radius:11px;padding:9px;cursor:pointer}.horse-check.year-foal{background:#faf0df;border-color:#d9bb8d}.horse-check input{width:auto}.horse-check span{min-width:0}.horse-check b{display:block;font-size:9px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.horse-check small{display:block;font-size:8px;color:#8d8a83;margin-top:3px}
+@media(max-width:1100px){.photo-gallery{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:760px){.photo-gallery{grid-template-columns:repeat(2,1fr)}.branding-card{grid-template-columns:95px 1fr}.branding-year{font-size:25px}.horse-check-grid{grid-template-columns:1fr}.photo-strip{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:480px){.photo-gallery{grid-template-columns:1fr}.gallery-photo>div{height:220px}.branding-card{grid-template-columns:1fr}.branding-year{padding:13px;flex-direction:row;gap:10px}.branding-year small{margin:0}.inline-two{grid-template-columns:1fr}}
+
+/* ===== Official v1.0 additions ===== */
+.brand-vault{display:grid;grid-template-columns:minmax(260px,380px) 1fr;gap:28px;align-items:stretch;background:linear-gradient(135deg,#0d2a36,#153b45);border-radius:24px;padding:28px;color:white;box-shadow:0 18px 50px rgba(7,28,36,.18);position:relative;overflow:hidden}
+.brand-vault:after{content:'◆';position:absolute;right:-28px;bottom:-65px;font-size:190px;color:rgba(255,255,255,.035)}
+.brand-image-large{min-height:340px;border-radius:20px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.06);display:grid;place-items:center;font-size:80px;color:#d5b56d;background-size:contain;background-position:center;background-repeat:no-repeat;position:relative;z-index:1}
+.brand-image-large.has-image{background-color:#f7f3ea}
+.brand-vault-copy{display:flex;flex-direction:column;justify-content:center;position:relative;z-index:1}
+.brand-vault-copy .eyebrow{color:#d7bd78}.brand-vault-copy h2{font-family:Georgia,'Times New Roman',serif;font-size:34px;margin:7px 0 20px}.brand-vault-copy p{max-width:620px;color:rgba(255,255,255,.72);line-height:1.8;font-size:12px;margin:18px 0 22px}.brand-vault-copy .info-grid{margin:0}.brand-vault-copy .info-item{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.1)}.brand-vault-copy .info-item small{color:rgba(255,255,255,.55)}.brand-vault-copy .info-item strong{color:white}.brand-vault-copy .primary-btn{align-self:flex-start}
+.brand-inline{display:flex;align-items:center;gap:14px;background:#f7f4ed;border:1px solid #e8e1d4;border-radius:16px;padding:12px}.brand-inline-image{width:66px;height:66px;border-radius:14px;display:grid;place-items:center;background:#0e2d38;color:#d8bc72;font-size:28px;background-size:contain;background-position:center;background-repeat:no-repeat}.brand-inline strong,.brand-inline small{display:block}.brand-inline small{color:#777;margin-top:5px}
+.saved-brand-preview{display:flex;align-items:center;gap:14px;padding:12px;border:1px solid #e8e1d4;border-radius:14px;background:#faf8f4}.saved-brand-preview>div{width:90px;height:90px;border-radius:12px;background:#fff center/contain no-repeat;border:1px solid #e8e1d4}.saved-brand-preview span{font-size:11px;color:#666}
+.status-transition{background:#faf6ef;border:1px solid #eadfce;border-radius:16px;padding:14px}.status-transition-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.status-transition-grid label{font-size:10px;font-weight:700;color:#54636a;letter-spacing:.04em}.status-transition-grid label.full{grid-column:1/-1}.status-transition-grid input,.status-transition-grid textarea{width:100%;margin-top:7px;border:1px solid #d9d5cc;border-radius:10px;background:white;padding:10px;font:inherit;color:#16262d}.age-live{display:block;margin-top:7px;color:#6f7d82;font-size:10px}.local-warning{margin-top:16px;padding:13px 15px;border-radius:12px;background:#fff8df;border:1px solid #ead58a;color:#6b5a23;font-size:11px;line-height:1.65}.compact-table{margin-top:18px}.archive-stats{grid-template-columns:repeat(6,minmax(0,1fr))}.archive-table td{vertical-align:top}.status:empty{display:none}
+@media(max-width:1150px){.archive-stats{grid-template-columns:repeat(3,minmax(0,1fr))}.brand-vault{grid-template-columns:300px 1fr}}
+@media(max-width:760px){.brand-vault{grid-template-columns:1fr;padding:18px}.brand-image-large{min-height:260px}.brand-vault-copy h2{font-size:27px}.archive-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.status-transition-grid{grid-template-columns:1fr}}
+
+/* ===== v2.3 — restored primary horse-add menu + Light/Dark appearance ===== */
+.nav-add-primary{
+  margin:3px 0 8px;
+  background:linear-gradient(135deg,rgba(216,177,118,.20),rgba(182,131,71,.10));
+  border:1px solid rgba(216,177,118,.42);
+  color:#fff;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.025),0 7px 18px rgba(0,0,0,.08)
+}
+.nav-add-primary span{color:#f0c98f;font-size:21px}
+.nav-add-primary b{font-weight:850}
+.nav-add-primary:hover{background:linear-gradient(135deg,rgba(216,177,118,.29),rgba(182,131,71,.17));transform:translateY(-1px)}
+
+.theme-toggle-btn{
+  height:40px;display:inline-flex;align-items:center;justify-content:center;gap:7px;
+  border:1px solid #d8cfbf;background:#fffaf1;color:#445055;border-radius:12px;
+  padding:0 12px;font-size:11px;font-weight:800;white-space:nowrap
+}
+.theme-toggle-btn:hover{transform:translateY(-1px)}
+.appearance-panel{margin-top:18px}
+.appearance-choices{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.appearance-choice{border:1px solid #ded6c9;background:#fffaf2;color:#526064;border-radius:15px;padding:15px;text-align:left;display:flex;align-items:center;gap:12px}
+.appearance-choice>span{width:37px;height:37px;border-radius:12px;display:grid;place-items:center;background:#efe5d5;font-size:18px}
+.appearance-choice strong{display:block;font-size:11px}.appearance-choice small{display:block;margin-top:3px;color:#8a8d88;font-size:9px}
+.appearance-choice.current{border-color:#b78b56;box-shadow:0 0 0 2px rgba(183,139,86,.12);background:#fbf2e4}
+
+/* Dark theme */
+html[data-theme="dark"]{
+  --ink:#e8e4db;--navy:#d5b27b;--navy-2:#183743;--paper:#0f171b;--card:#172228;
+  --bronze:#d6ac70;--bronze-2:#e3bf86;--line:#2b3940;--muted:#9ba7a8;--green:#7eb89c;
+  --red:#d07a72;--shadow:0 18px 45px rgba(0,0,0,.22)
+}
+html[data-theme="dark"] body{background:#0f171b;color:var(--ink)}
+html[data-theme="dark"] .topbar{background:rgba(15,23,27,.90);border-bottom-color:#26363d}
+html[data-theme="dark"] .search-wrap{border-color:#33444b;background:rgba(25,37,43,.92)}
+html[data-theme="dark"] .search-wrap input{color:#edf0ec}
+html[data-theme="dark"] .search-wrap input::placeholder{color:#79898c}
+html[data-theme="dark"] .theme-toggle-btn,
+html[data-theme="dark"] .ghost-btn{background:#18252b;border-color:#34464d;color:#dfe7e5}
+html[data-theme="dark"] .primary-btn{background:#c79b63;color:#13232a;box-shadow:0 8px 22px rgba(0,0,0,.22)}
+html[data-theme="dark"] .secondary-btn{background:#2a302f;border-color:#51483a;color:#e6c99f}
+html[data-theme="dark"] .date-pill{background:#1a272d;border-color:#33434a;color:#c8d0ce}
+html[data-theme="dark"] .stat-card,
+html[data-theme="dark"] .panel,
+html[data-theme="dark"] .horse-card,
+html[data-theme="dark"] .profile-card,
+html[data-theme="dark"] .table-wrap,
+html[data-theme="dark"] .info-panel,
+html[data-theme="dark"] .gallery-photo,
+html[data-theme="dark"] .branding-card{background:#172228;border-color:#2c3a40;box-shadow:0 10px 30px rgba(0,0,0,.16)}
+html[data-theme="dark"] .panel-head{border-bottom-color:#2b3940}
+html[data-theme="dark"] .herd-row:hover{background:#1c2b31}
+html[data-theme="dark"] .activity-item{border-bottom-color:#2c3a40}
+html[data-theme="dark"] .activity-dot,
+html[data-theme="dark"] .stat-icon{background:#283238;color:#d9b47b}
+html[data-theme="dark"] .horse-card .card-footer,
+html[data-theme="dark"] .card-footer{border-top-color:#2b3940;color:#a7afad}
+html[data-theme="dark"] .filter-chip{border-color:#34444a;background:#172228;color:#c7cfcd}
+html[data-theme="dark"] .filter-chip.active{background:#c39a65;border-color:#c39a65;color:#13242b}
+html[data-theme="dark"] .data-table th{background:#121d22;color:#a9b3b2}
+html[data-theme="dark"] .data-table th,
+html[data-theme="dark"] .data-table td{border-bottom-color:#29373d}
+html[data-theme="dark"] .data-table tr:hover td{background:#1b292f}
+html[data-theme="dark"] .status.ok{background:#20372f;color:#90c4aa}
+html[data-theme="dark"] .status.race{background:#3a3024;color:#dfbd8a}
+html[data-theme="dark"] .status.archived{background:#2a3032;color:#b5babb}
+html[data-theme="dark"] .info-item{background:#121d22;border-color:#2b3940}
+html[data-theme="dark"] .info-item small{color:#8f9c9e}
+html[data-theme="dark"] .modal{background:#162127;border-color:#304047;color:#e7e5df}
+html[data-theme="dark"] .modal-head{border-bottom-color:#2b3a40}
+html[data-theme="dark"] .modal .icon-button{background:#243239;color:#dfe5e3}
+html[data-theme="dark"] .field input,
+html[data-theme="dark"] .field select,
+html[data-theme="dark"] .field textarea,
+html[data-theme="dark"] .status-transition-grid input,
+html[data-theme="dark"] .status-transition-grid textarea,
+html[data-theme="dark"] .inline-create input{background:#101a1f!important;border-color:#33444b;color:#ecede8}
+html[data-theme="dark"] .field input::placeholder,
+html[data-theme="dark"] .field textarea::placeholder{color:#687a7e}
+html[data-theme="dark"] .quick-option{background:#172329;border-color:#314148;color:#e5e5df}
+html[data-theme="dark"] .quick-option:hover{background:#1e3037;border-color:#9b7448}
+html[data-theme="dark"] .upload-box,
+html[data-theme="dark"] .upload-live{background:#121d22;border-color:#3a4a50;color:#d7dedc}
+html[data-theme="dark"] .upload-live:hover{background:#1c2b31;border-color:#b58a55}
+html[data-theme="dark"] .inline-create{background:#141f24;border-color:#4b4a42}
+html[data-theme="dark"] .checkbox-field,
+html[data-theme="dark"] .status-transition{background:#151f24;border-color:#354149}
+html[data-theme="dark"] .foal-item,
+html[data-theme="dark"] .pedigree-box,
+html[data-theme="dark"] .tree-card{background:#172228;border-color:#2c3a40}
+html[data-theme="dark"] .branding-tags span{background:#2d2b27;border-color:#504534;color:#d9bb8d}
+html[data-theme="dark"] .branding-horses button,
+html[data-theme="dark"] .horse-check{background:#142027;border-color:#304047;color:#dfe5e3}
+html[data-theme="dark"] .horse-check.year-foal{background:#30291f;border-color:#66543a}
+html[data-theme="dark"] .branding-note{background:#211f1c;color:#c9c0b4}
+html[data-theme="dark"] .brand-inline,
+html[data-theme="dark"] .saved-brand-preview{background:#151f24;border-color:#344148}
+html[data-theme="dark"] .saved-brand-preview>div{background-color:#10191e;border-color:#344148}
+html[data-theme="dark"] .appearance-choice{background:#152127;border-color:#33434a;color:#dce3e1}
+html[data-theme="dark"] .appearance-choice>span{background:#24343a}
+html[data-theme="dark"] .appearance-choice small{color:#92a0a1}
+html[data-theme="dark"] .appearance-choice.current{background:#2b2822;border-color:#b98d59;box-shadow:0 0 0 2px rgba(185,141,89,.14)}
+html[data-theme="dark"] .empty-state{color:#a8b2b1}
+html[data-theme="dark"] .local-warning{background:#2d291a;border-color:#5f5532;color:#dfd09b}
+html[data-theme="dark"] .deleted-banner{background:#30201f;border-color:#67413e;color:#e2a49f}
+html[data-theme="dark"] .admin-lock{background:#2b2924;color:#d4bd9a}
+html[data-theme="dark"] .danger-btn{background:#342120;border-color:#744844;color:#e6a29c}
+html[data-theme="dark"] .restore-btn{background:#1e3329;border-color:#456853;color:#9fd1b3}
+html[data-theme="dark"] .text-link{color:#d0a46e}
+
+@media(max-width:860px){
+  .theme-toggle-btn{padding:0 10px}
+}
+@media(max-width:560px){
+  .appearance-choices{grid-template-columns:1fr}
+  .theme-toggle-btn{width:40px;padding:0}
+  .theme-toggle-btn #themeToggleText{display:none}
+}
+
+</style>
+</head>
+<body>
+  <div class="app-shell" id="appShell">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 64 64" role="img">
+            <path d="M14 44c8-6 12-17 15-28 7 5 13 6 22 3-2 8-7 13-15 16 7 3 12 7 15 13-8-4-16-5-24-2-5 2-9 2-13-2Z" fill="currentColor"/>
+            <path d="M26 17c-2-5 0-9 4-12 0 5 2 8 6 11" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div>
+          <div class="brand-title" id="sidebarAppTitle">УДМЫН ХҮЛЭГ</div>
+          <div class="brand-subtitle" id="sidebarFamilyTitle">Гэр бүлийн адууны удмын сан</div>
+        </div>
+      </div>
+
+      <nav class="nav-list" aria-label="Үндсэн цэс">
+        <button class="nav-item active" data-view="dashboard"><span>⌂</span><b>Нүүр</b></button>
+        <button class="nav-item nav-add-primary" id="sidebarAddHorse"><span>＋</span><b>Адуу нэмэх</b></button>
+        <button class="nav-item" data-view="herds"><span>♞</span><b>Азарганы сүрэг</b></button>
+        <button class="nav-item" data-view="horses"><span>◈</span><b>Бүх адуу</b></button>
+        <button class="nav-item" data-view="foals"><span>◌</span><b>Унага</b></button>
+        <button class="nav-item" data-view="racing"><span>★</span><b>Уралдааны хүлэг</b></button>
+        <button class="nav-item" data-view="pedigree"><span>⌘</span><b>Удам</b></button>
+        <button class="nav-item" data-view="myBrand"><span>◆</span><b>Миний тамга</b></button>
+        <button class="nav-item" data-view="brandings"><span>⌗</span><b>Тамгалалт</b></button>
+        <button class="nav-item" data-view="archive"><span>▤</span><b>Гарсан адуу</b></button>
+        <button class="nav-item" id="deletedNav" data-view="deleted" hidden><span>⌫</span><b>Устгасан адуу</b></button>
+        <button class="nav-item" data-view="gallery"><span>▣</span><b>Зургийн сан</b></button>
+        <button class="nav-item" data-view="members"><span>♙</span><b>Гэр бүлийн хэрэглэгчид</b></button>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <button class="nav-item" data-view="settings"><span>⚙</span><b>Тохиргоо</b></button>
+        <div class="user-card">
+          <div class="avatar" id="currentUserAvatar">—</div>
+          <div class="user-meta"><strong id="currentUserName">Хэрэглэгч</strong><small id="currentUserRole">—</small></div>
+          <button class="icon-button" id="logoutBtn" title="Гарах">↪</button>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <button class="mobile-menu" id="mobileMenu" aria-label="Цэс">☰</button>
+        <div class="search-wrap">
+          <span>⌕</span>
+          <input id="globalSearch" placeholder="Адуу, зүс, удам, сүргээр хайх..." />
+        </div>
+        <div class="top-actions">
+          <button class="theme-toggle-btn" id="themeToggle" type="button" title="Light / Dark горим"><span id="themeToggleIcon">☾</span> <span id="themeToggleText">Dark</span></button>
+          <button class="ghost-btn" id="quickPhotoBtn">▣ <span>Зураг</span></button>
+          <button class="primary-btn" id="openQuickAdd">＋ <span>Адуу нэмэх</span></button>
+        </div>
+      </header>
+
+      <section class="content" id="viewContainer"></section>
+    </main>
+  </div>
+
+  <div class="login-layer" id="loginLayer">
+    <div class="login-bg"></div>
+    <div class="login-card">
+      <div class="login-ornament">◆</div>
+      <div class="login-brand-mark brand-mark">
+        <svg viewBox="0 0 64 64"><path d="M14 44c8-6 12-17 15-28 7 5 13 6 22 3-2 8-7 13-15 16 7 3 12 7 15 13-8-4-16-5-24-2-5 2-9 2-13-2Z" fill="currentColor"/><path d="M26 17c-2-5 0-9 4-12 0 5 2 8 6 11" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>
+      </div>
+      <h1 id="loginTitle">УДМЫН ХҮЛЭГ</h1>
+      <p id="loginSubtitle">Гэр бүлийн адууны удмын сан</p>
+      <form id="loginForm">
+        <label id="familyNameWrap" hidden>Гэр бүлийн нэр<input id="familyName" autocomplete="organization" placeholder="Жишээ: Эрдэнэболдын гэр бүл" /></label>
+        <label id="displayNameWrap" hidden>Таны нэр<input id="displayName" autocomplete="name" placeholder="Жишээ: Бат" /></label>
+        <label>Хэрэглэгчийн нэр<input id="username" autocomplete="username" placeholder="username" /></label>
+        <label>Нууц үг<input id="password" type="password" autocomplete="current-password" placeholder="••••••••" /></label>
+        <button class="login-btn" id="loginAction" type="submit">Нэвтрэх</button>
+      </form>
+      <small class="demo-note" id="loginNote"></small>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="modalBackdrop" hidden>
+    <div class="modal" role="dialog" aria-modal="true">
+      <div class="modal-head">
+        <div><small>БҮРТГЭЛ</small><h2 id="modalTitle">Шинэ бүртгэл</h2></div>
+        <button class="icon-button" id="closeModal">×</button>
+      </div>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <script>
+const SUPABASE_URL = 'https://skqcazprznajwmqhwrfb.supabase.co';
+const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_zvZ_lZI0wA5vujb2KcsxyQ_HTIQGzpM';
+const AUTH_STORAGE_KEY = 'udmyn_huleg_cloud_session_v21';
+let cloudSession = null;
+try { cloudSession = JSON.parse(localStorage.getItem(AUTH_STORAGE_KEY) || 'null'); } catch {}
+function persistSession(session){ cloudSession=session||null; if(session)localStorage.setItem(AUTH_STORAGE_KEY,JSON.stringify(session)); else localStorage.removeItem(AUTH_STORAGE_KEY); }
+function sessionExpiredSoon(s){ return !s?.access_token || ((s.expires_at||0)*1000 - Date.now() < 60000); }
+async function refreshCloudSession(){
+  if(!cloudSession) return null;
+  if(!sessionExpiredSoon(cloudSession)) return cloudSession;
+  if(!cloudSession.refresh_token){persistSession(null);return null;}
+  try{
+    const r=await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=refresh_token`,{method:'POST',headers:{apikey:SUPABASE_PUBLISHABLE_KEY,'Content-Type':'application/json'},body:JSON.stringify({refresh_token:cloudSession.refresh_token})});
+    if(!r.ok){persistSession(null);return null;} const j=await r.json(); j.expires_at=j.expires_at||Math.floor(Date.now()/1000)+(j.expires_in||3600); persistSession(j); return j;
+  }catch(e){console.error(e);return cloudSession;}
+}
+async function authedFetch(path,options={}){
+  const session=await refreshCloudSession(); if(!session?.access_token) throw new Error('Нэвтрэх шаардлагатай.');
+  const headers={apikey:SUPABASE_PUBLISHABLE_KEY,Authorization:`Bearer ${session.access_token}`,...(options.headers||{})};
+  return fetch(`${SUPABASE_URL}${path}`,{...options,headers});
+}
+async function authSignIn(email,password){
+  try{const r=await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=password`,{method:'POST',headers:{apikey:SUPABASE_PUBLISHABLE_KEY,'Content-Type':'application/json'},body:JSON.stringify({email,password})}); const j=await r.json(); if(!r.ok)return {error:j}; j.expires_at=j.expires_at||Math.floor(Date.now()/1000)+(j.expires_in||3600); persistSession(j); return {data:{session:j,user:j.user},error:null};}catch(error){return {error};}
+}
+async function authGetSession(){const s=await refreshCloudSession();return {data:{session:s},error:null};}
+async function authGetUser(){
+  try{const s=await refreshCloudSession(); if(!s?.access_token)return {data:{user:null},error:new Error('No session')}; const r=await fetch(`${SUPABASE_URL}/auth/v1/user`,{headers:{apikey:SUPABASE_PUBLISHABLE_KEY,Authorization:`Bearer ${s.access_token}`}}); const j=await r.json(); if(!r.ok)return {data:{user:null},error:j}; return {data:{user:j},error:null};}catch(error){return {data:{user:null},error};}
+}
+async function authSignOut(){try{const s=cloudSession;if(s?.access_token)await fetch(`${SUPABASE_URL}/auth/v1/logout`,{method:'POST',headers:{apikey:SUPABASE_PUBLISHABLE_KEY,Authorization:`Bearer ${s.access_token}`}});}catch{}persistSession(null);}
+async function dbSelect(table,select,filters={},opts={}){
+  const q=new URLSearchParams(); q.set('select',select); for(const [k,v] of Object.entries(filters))q.set(k,`eq.${v}`); if(opts.order)q.set('order',`${opts.order}.asc`);
+  const r=await authedFetch(`/rest/v1/${table}?${q.toString()}`,{headers:{Accept:'application/json'}}); const j=await r.json(); if(!r.ok)throw j; return j;
+}
+async function dbUpdate(table,values,filters={}){
+  const q=new URLSearchParams(); for(const [k,v] of Object.entries(filters))q.set(k,`eq.${v}`);
+  const r=await authedFetch(`/rest/v1/${table}?${q.toString()}`,{method:'PATCH',headers:{'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify(values)}); if(!r.ok){let j={};try{j=await r.json()}catch{}throw j;} return true;
+}
+async function storageUpload(bucket,path,file,contentType){const r=await authedFetch(`/storage/v1/object/${bucket}/${encodeURI(path)}`,{method:'POST',headers:{'Content-Type':contentType||file.type||'application/octet-stream','x-upsert':'false'},body:file}); if(!r.ok){let j={};try{j=await r.json()}catch{}throw j;} return true;}
+async function storageSignedUrl(bucket,path,expiresIn=86400){const r=await authedFetch(`/storage/v1/object/sign/${bucket}/${encodeURI(path)}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({expiresIn})}); const j=await r.json(); if(!r.ok)throw j; let u=j.signedURL||j.signedUrl||''; if(u&&u.startsWith('/object/'))u=`${SUPABASE_URL}/storage/v1${u}`; else if(u&&u.startsWith('/storage/v1/'))u=SUPABASE_URL+u; else if(u&&u.startsWith('/'))u=SUPABASE_URL+u; return u;}
+
+const THEME_STORAGE_KEY='udmyn_huleg_theme_v1';
+function getTheme(){return document.documentElement.dataset.theme==='dark'?'dark':'light';}
+function updateThemeControls(){
+  const dark=getTheme()==='dark';
+  const icon=$('#themeToggleIcon'),txt=$('#themeToggleText');
+  if(icon)icon.textContent=dark?'☀':'☾';
+  if(txt)txt.textContent=dark?'Light':'Dark';
+  $$('.appearance-choice').forEach(x=>x.classList.toggle('current',x.dataset.themeChoice===getTheme()));
+}
+function applyTheme(theme,persist=true){
+  const t=theme==='dark'?'dark':'light';
+  document.documentElement.dataset.theme=t;
+  if(persist)localStorage.setItem(THEME_STORAGE_KEY,t);
+  const meta=document.querySelector('meta[name="theme-color"]'); if(meta)meta.setAttribute('content',t==='dark'?'#0f171b':'#0c2430');
+  updateThemeControls();
+}
+window.setTheme=(theme)=>{applyTheme(theme,true);toast(theme==='dark'?'Dark горим идэвхжлээ':'Light горим идэвхжлээ');};
+applyTheme(localStorage.getItem(THEME_STORAGE_KEY)||'light',false);
+
+const ACTIVE_STATUS = 'Сүрэгт байгаа';
+const INACTIVE_STATUSES = ['Зарсан','Бэлэглэсэн','Үрэгдсэн','Хорогдсон','Үхсэн','Алга болсон'];
+const TODAY = new Date();
+const CURRENT_YEAR = TODAY.getFullYear();
+
+const seed = {
+  colors: ['Хээр','Хонгор','Хүрэн','Халиун','Бор','Халтар','Буурал','Шарга','Зээрд','Хар','Цавьдар'],
+  herds: [], horses: [], races: [], photos: [], brandings: [], activities: [], members: [], statusEvents: [], herdEvents: [],
+  settings: {
+    appTitle: 'Удмын Хүлэг',
+    familyTitle: 'Гэр бүлийн адууны удмын сан',
+    registryPrefix: 'A-',
+    familyName: '',
+    schemaVersion: 3,
+    familyBrand: { name: '', defaultLocation: '', description: '', imageDataUrl: '' }
+  }
+};
+
+let state = structuredClone(seed);
+state.colors ||= structuredClone(seed.colors);
+state.herds ||= [];
+state.horses ||= [];
+state.races ||= [];
+state.photos ||= [];
+state.brandings ||= [];
+state.activities ||= [];
+state.members ||= [];
+state.statusEvents ||= [];
+state.herdEvents ||= [];
+state.settings ||= structuredClone(seed.settings);
+state.settings.familyBrand ||= structuredClone(seed.settings.familyBrand);
+
+let currentView = 'dashboard';
+let selectedHorseId = state.horses[0]?.id || '';
+let currentUserId = '';
+let currentFamilyId = '';
+let needsInitialSetup = false;
+let saveQueue = Promise.resolve();
+let realtimeChannel = null;
+let deletedArchive = [];
+const $ = (s)=>document.querySelector(s);
+const $$ = (s)=>[...document.querySelectorAll(s)];
+
+function save(){
+  if(!currentFamilyId) return Promise.resolve();
+  if(!canEdit()){ toast('Танд зөвхөн харах эрх байна.'); return Promise.resolve(); }
+  const payload = JSON.parse(JSON.stringify(state));
+  saveQueue = saveQueue.then(async()=>{
+    try{ await dbUpdate('family_state',{data:payload,updated_at:new Date().toISOString(),updated_by:currentUserId},{family_id:currentFamilyId}); }
+    catch(error){ console.error(error); toast('Cloud хадгалалт амжилтгүй боллоо.'); }
+  });
+  return saveQueue;
+}
+async function refreshSignedMedia(){
+  const targets=[];
+  for(const p of state.photos||[]) if(p.path) targets.push([p,'dataUrl',p.path]);
+  const fb=state.settings?.familyBrand; if(fb?.imagePath) targets.push([fb,'imageDataUrl',fb.imagePath]);
+  for(const b of state.brandings||[]) if(b.photoPath) targets.push([b,'photoDataUrl',b.photoPath]);
+  await Promise.all(targets.map(async([obj,key,path])=>{try{obj[key]=await storageSignedUrl('udmyn-huleg-media',path,86400);}catch(e){console.error(e);obj[key]='';}}));
+}
+async function loadDeletedArchive(){
+  deletedArchive=[];
+  if(!currentFamilyId || !isAdmin()) return;
+  try{
+    const rows=await dbSelect('deleted_horses','horse_id,payload,deleted_by_name,deleted_reason,deleted_at',{family_id:currentFamilyId});
+    deletedArchive=(rows||[]).sort((a,b)=>String(b.deleted_at||'').localeCompare(String(a.deleted_at||'')));
+    const media=[];
+    for(const row of deletedArchive){
+      for(const p of row?.payload?.photos||[]) if(p?.path) media.push([p,'dataUrl',p.path]);
+    }
+    await Promise.all(media.map(async([obj,key,path])=>{try{obj[key]=await storageSignedUrl('udmyn-huleg-media',path,86400);}catch(e){console.error(e);obj[key]='';}}));
+  }catch(e){console.error('Deleted archive load failed',e);deletedArchive=[];}
+}
+async function manageHorseDeletion(action,horseId,reason=''){
+  const {data:{session}}=await authGetSession();
+  const res=await fetch(`${SUPABASE_URL}/functions/v1/manage-horse-deletion`,{method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_PUBLISHABLE_KEY,'Authorization':`Bearer ${session?.access_token||''}`},body:JSON.stringify({action,horseId,reason})});
+  const out=await res.json(); if(!res.ok)throw new Error(out.error||'Үйлдэл амжилтгүй'); return out;
+}
+
+async function loadCloudState(){
+  const {data:{user},error:userError}=await authGetUser();
+  if(userError||!user) return false;
+  currentUserId=user.id;
+  currentFamilyId=user.app_metadata?.family_id||'';
+  const [rows,profiles,families] = await Promise.all([
+    dbSelect('family_state','data,updated_at,updated_by',{family_id:currentFamilyId}),
+    dbSelect('profiles','id,username,display_name,role,created_at',{family_id:currentFamilyId},{order:'created_at'}),
+    dbSelect('families','name',{id:currentFamilyId})
+  ]);
+  const row=rows?.[0],family=families?.[0]; if(!row)throw new Error('Family state not found');
+  state = row?.data || structuredClone(seed);
+  state.colors ||= structuredClone(seed.colors); state.herds ||= []; state.horses ||= []; state.races ||= []; state.photos ||= []; state.brandings ||= []; state.activities ||= []; state.statusEvents ||= []; state.herdEvents ||= []; state.settings ||= structuredClone(seed.settings); state.settings.familyBrand ||= structuredClone(seed.settings.familyBrand);
+  state.members=(profiles||[]).map(x=>({id:x.id,username:x.username,name:x.display_name,role:x.role,createdAt:x.created_at}));
+  state.settings.familyName = family?.name || state.settings.familyName || '';
+  if(!state.settings.familyTitle && state.settings.familyName) state.settings.familyTitle=`${state.settings.familyName} · адууны удмын сан`;
+  window.__familyUpdatedAt=row?.updated_at||'';
+  await refreshSignedMedia();
+  if(isAdmin()) await loadDeletedArchive(); else deletedArchive=[];
+  return true;
+}
+function normalizeLoadedState(next){
+  next ||= structuredClone(seed);
+  next.colors ||= structuredClone(seed.colors); next.herds ||= []; next.horses ||= []; next.races ||= []; next.photos ||= []; next.brandings ||= []; next.activities ||= []; next.statusEvents ||= []; next.herdEvents ||= []; next.settings ||= structuredClone(seed.settings); next.settings.familyBrand ||= structuredClone(seed.settings.familyBrand);
+  return next;
+}
+async function startRealtime(){
+  if(realtimeChannel){clearInterval(realtimeChannel);realtimeChannel=null;}
+  if(!currentFamilyId)return;
+  realtimeChannel=setInterval(async()=>{
+    try{
+      const rows=await dbSelect('family_state','data,updated_at,updated_by',{family_id:currentFamilyId}); const row=rows?.[0];
+      if(!row||!row.updated_at||row.updated_at===window.__familyUpdatedAt)return;
+      window.__familyUpdatedAt=row.updated_at;
+      if(row.updated_by===currentUserId)return;
+      const members=state.members||[]; state=normalizeLoadedState(row.data); state.members=members; await refreshSignedMedia(); if(isAdmin())await loadDeletedArchive(); syncShell();render();toast('Гэр бүлийн сан шинэчлэгдлээ');
+    }catch(e){console.error(e);}
+  },5000);
+}
+function normalizeUsername(v=''){return String(v).trim().toLowerCase().replace(/[^a-z0-9._-]/g,'');}
+function loginEmail(username){return `${normalizeUsername(username)}@udmyn-huleg.app`;}
+async function uploadPrivateImage(file,kind='media'){
+  if(!file||!file.size) return null;
+  if(!currentFamilyId) throw new Error('Family ID missing');
+  const ext=(file.name.split('.').pop()||'jpg').toLowerCase().replace(/[^a-z0-9]/g,'')||'jpg';
+  const path=`${currentFamilyId}/${kind}/${Date.now()}-${Math.random().toString(36).slice(2,8)}.${ext}`;
+  await storageUpload('udmyn-huleg-media',path,file,file.type||'image/jpeg');
+  const url=await storageSignedUrl('udmyn-huleg-media',path,86400);
+  return {path,url};
+}
+function toast(msg){ const el=$('#toast'); el.textContent=msg; el.classList.add('show'); setTimeout(()=>el.classList.remove('show'),2400); }
+function esc(v=''){ return String(v).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c])); }
+function localDate(){ const d=new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
+function dateMn(d){ if(!d) return '—'; const x=new Date(`${d}T00:00:00`); if(Number.isNaN(x.getTime())) return d; return `${x.getFullYear()}.${String(x.getMonth()+1).padStart(2,'0')}.${String(x.getDate()).padStart(2,'0')}`; }
+function birthYearOf(h){ return +(h?.birthDate?.slice(0,4) || h?.birth || 0) || null; }
+function ageText(birthDate, birthYear){
+  let d = birthDate ? new Date(`${birthDate}T00:00:00`) : birthYear ? new Date(`${birthYear}-01-01T00:00:00`) : null;
+  if(!d || Number.isNaN(d.getTime())) return '—';
+  const now=new Date(); let years=now.getFullYear()-d.getFullYear(); let months=now.getMonth()-d.getMonth();
+  if(now.getDate()<d.getDate()) months--;
+  if(months<0){years--;months+=12;}
+  if(years<0) return '—';
+  if(years===0) return `${Math.max(0,months)} сар`;
+  return `${years} нас${months?` ${months} сар`:''}`;
+}
+function statusClass(s){ return s===ACTIVE_STATUS?'ok':(s==='Зарсан'||s==='Бэлэглэсэн'?'race':''); }
+function isActiveHorse(h){ return (h.status||ACTIVE_STATUS)===ACTIVE_STATUS; }
+function currentUser(){ return state.members.find(m=>m.id===currentUserId) || null; }
+function canEdit(){ return ['Admin','Editor'].includes(currentUser()?.role||''); }
+function isAdmin(){ return currentUser()?.role==='Admin'; }
+function editOnly(html=''){ return canEdit()?html:''; }
+function adminOnly(html=''){ return isAdmin()?html:''; }
+function initials(name=''){ return name.trim().split(/\s+/).map(x=>x[0]||'').join('').slice(0,2).toUpperCase() || '—'; }
+function nextHorseId(){
+  const prefix=state.settings.registryPrefix||'A-';
+  const max=state.horses.reduce((m,x)=>Math.max(m, +(String(x.id||'').match(/\d+/)?.[0]||0)),0);
+  return `${prefix}${String(max+1).padStart(4,'0')}`;
+}
+function horseByDisplay(name){ return state.horses.find(h=>h.display===name || h.name===name); }
+function activeHorses(){ return state.horses.filter(isActiveHorse); }
+function herdMembers(name){ return activeHorses().filter(h=>h.herd===name); }
+function herdSummary(hd){
+  const list=herdMembers(hd.name);
+  return {total:list.length, mares:list.filter(h=>h.sex==='Гүү').length, geldings:list.filter(h=>h.sex==='Морь').length, foals:list.filter(h=>h.sex==='Унага').length};
+}
+function addActivity(icon,title,detail){ state.activities.unshift([icon,title,detail,new Date().toLocaleString('mn-MN')]); state.activities=state.activities.slice(0,60); }
+function pageHead(kicker,title,desc,action=''){
+  const d=new Date(); const date=`${d.getFullYear()} оны ${d.getMonth()+1}-р сарын ${d.getDate()}`;
+  return `<div class="page-head"><div class="page-title"><div class="eyebrow">${kicker}</div><h1>${title}</h1><p>${desc}</p></div>${action||`<div class="date-pill">${date}</div>`}</div>`;
+}
+function stat(label,value,icon,sub){return `<div class="stat-card"><div class="stat-top"><span>${label}</span><span class="stat-icon">${icon}</span></div><div class="stat-value">${value}</div><div class="stat-sub"><span class="trend">${sub}</span></div></div>`}
+function info(a,b){return `<div class="info-item"><small>${a}</small><strong>${b}</strong></div>`}
+function optionList(values,selected=''){ return values.map(v=>`<option value="${esc(v)}" ${v===selected?'selected':''}>${esc(v)}</option>`).join(''); }
+function formActions(label='Хадгалах'){return `<div class="form-actions"><button type="button" class="ghost-btn" onclick="document.querySelector('#closeModal').click()">Болих</button><button class="primary-btn" type="submit">${label}</button></div>`}
+function emptyState(icon,title,desc,action=''){ return `<div class="empty-state"><div class="big">${icon}</div><h3>${title}</h3><p>${desc}</p>${action}</div>`; }
+
+function syncShell(){
+  $('#sidebarAppTitle').textContent=(state.settings.appTitle||'Удмын Хүлэг').toUpperCase();
+  $('#sidebarFamilyTitle').textContent=state.settings.familyTitle||'Гэр бүлийн адууны удмын сан';
+  const u=currentUser();
+  $('#currentUserName').textContent=u?.name||'Хэрэглэгч';
+  $('#currentUserRole').textContent=u?.role||'—';
+  $('#currentUserAvatar').textContent=initials(u?.name||'');
+  const q=$('#openQuickAdd'); if(q)q.style.display=canEdit()?'':'none';
+  const addNav=$('#sidebarAddHorse'); if(addNav)addNav.style.display=canEdit()?'':'none';
+  const dn=$('#deletedNav'); if(dn)dn.hidden=!isAdmin();
+  updateThemeControls();
+}
+
+function stats(){
+  const act=activeHorses();
+  const foals=act.filter(x=>birthYearOf(x)===CURRENT_YEAR && x.sex==='Унага').length;
+  const racing=act.filter(x=>x.racing).length;
+  const archive=state.horses.length-act.length;
+  return `<div class="stats-grid">
+    ${stat('Сүрэгт байгаа',act.length,'♞','Одоогийн идэвхтэй адуу')}
+    ${stat('Азарганы сүрэг',state.herds.filter(h=>h.isActive!==false).length,'◆','Идэвхтэй сүрэг')}
+    ${stat('Гүү',act.filter(x=>x.sex==='Гүү').length,'◌','Идэвхтэй гүү')}
+    ${stat(`${CURRENT_YEAR} оны унага`,foals,'◍','Энэ жилийн төл')}
+    ${stat('Гарсан адуу',archive,'▤','Архивт хадгалагдсан')}
+  </div>`;
+}
+function dashboard(){
+  const u=currentUser();
+  const herds=state.herds.filter(h=>h.isActive!==false);
+  return `${pageHead('ГЭР БҮЛИЙН УДМЫН САН',`Өдрийн мэнд${u?.name?`, ${esc(u.name)}`:''}`,'Адууны бүртгэл, сүрэг, төл, тамгалалт болон архивын нэгтгэл.')} ${stats()}
+  <div class="grid-2">
+    <div class="panel"><div class="panel-head"><div><h2>Азарганы сүргүүд</h2><small>Одоогийн сүргийн бүтэц</small></div><button class="text-link" onclick="go('herds')">Бүгдийг харах →</button></div>
+      ${herds.length?`<div class="herd-list">${herds.map(herdRow).join('')}</div>`:emptyState('♞','Сүрэг бүртгэлгүй','Эхний азарганы сүргээ үүсгэнэ үү.',editOnly('<button class="primary-btn" onclick="openHerdForm()">＋ Шинэ сүрэг</button>'))}</div>
+    <div class="panel"><div class="panel-head"><div><h2>Сүүлийн үйлдэл</h2><small>Бүртгэлийн өөрчлөлтийн түүх</small></div></div>
+      ${state.activities.length?`<div class="activity">${state.activities.slice(0,7).map(a=>`<div class="activity-item"><div class="activity-dot">${a[0]}</div><div class="activity-body"><strong>${esc(a[1])}</strong>${esc(a[2])}<br><small>${esc(a[3])}</small></div></div>`).join('')}</div>`:emptyState('◌','Одоогоор үйлдэл алга','Адуу, унага эсвэл сүрэг бүртгэсний дараа энд түүх үүснэ.')}
+    </div>
+  </div>
+  <div class="hero-banner"><div class="hero-copy"><small>УДАМ БҮР ТҮҮХТЭЙ</small><h2>Өнөөдрийн бүртгэл — маргаашийн удмын түүх.</h2><p>Гарал, үр төл, сүргийн шилжилт, тамга им, зураг, уралдааны амжилт болон гарсан адууны түүхийг бүрэн хадгална.</p></div><div class="hero-horse">♞</div></div>`;
+}
+function herdRow(hd){ const s=herdSummary(hd); return `<div class="herd-row" onclick="openHerd('${hd.id}')"><div class="horse-thumb">♞</div><div><h3>${esc(hd.name)}</h3><p>${s.mares} гүү · ${s.geldings} морь · ${s.foals} унага</p></div><div class="herd-count"><strong>${s.total}</strong><small>адуутай</small></div></div>`; }
+function herds(){
+  const list=state.herds.filter(h=>h.isActive!==false);
+  return `${pageHead('СҮРЭГ','Азарганы сүргүүд','Одоогийн сүргийн бүтэц, толгой азарга болон бүрэлдэхүүнийг удирдана.',editOnly('<button class="primary-btn" onclick="openHerdForm()">＋ Шинэ сүрэг</button>'))}
+  ${list.length?`<div class="cards-grid">${list.map(x=>{const s=herdSummary(x);return `<article class="horse-card" onclick="openHerd('${x.id}')"><div class="horse-photo"><span class="tag">${s.total} адуу</span></div><div class="horse-card-body"><h3>${esc(x.name)}</h3><p>Толгой азарга: ${esc(x.stallion||'—')}</p><div class="card-footer"><span>${s.mares} гүү · ${s.foals} унага</span><button class="text-link">Нээх →</button></div></div></article>`}).join('')}</div>`:emptyState('♞','Сүрэг бүртгэлгүй','Эхний сүргээ үүсгэсний дараа адуунуудаа уг сүрэгт хуваарилна.',editOnly('<button class="primary-btn" onclick="openHerdForm()">＋ Шинэ сүрэг</button>'))}`;
+}
+function openHerd(id){
+  const hd=state.herds.find(h=>h.id===id); if(!hd)return;
+  const members=herdMembers(hd.name);
+  showModal(hd.name,`<div class="form-body"><div class="info-grid">${info('Толгой азарга',esc(hd.stallion||'—'))}${info('Нийт адуу',members.length)}${info('Гүү',members.filter(h=>h.sex==='Гүү').length)}${info('Унага',members.filter(h=>h.sex==='Унага').length)}</div><div class="table-wrap compact-table"><table class="data-table"><thead><tr><th>Адуу</th><th>Төрөл</th><th>Зүс</th><th>Нас</th></tr></thead><tbody>${members.map(h=>`<tr onclick="closeModal();openHorse('${h.id}')"><td>${esc(h.display)}</td><td>${h.sex}</td><td>${esc(h.color||'—')}</td><td>${ageText(h.birthDate,h.birth)}</td></tr>`).join('')}</tbody></table></div></div>`);
+}
+window.openHerd=openHerd;
+
+function horseRow(x){
+  const p=photoForHorse(x.id); const avatar=p?`<div class="mini-avatar photo" style="background-image:url('${p.dataUrl}')"></div>`:'<div class="mini-avatar">♞</div>';
+  return `<tr onclick="openHorse('${x.id}')"><td><div class="mini-horse">${avatar}<div><b>${esc(x.display)}</b><br><small>${esc(x.id)}</small></div></div></td><td>${x.sex}</td><td>${x.birthDate?dateMn(x.birthDate):(birthYearOf(x)||'—')}<br><small>${ageText(x.birthDate,x.birth)}</small></td><td>${esc(x.color||'—')}</td><td>${esc(x.herd||'—')}</td><td>${esc(x.origin||'—')}</td><td><span class="status ${statusClass(x.status)}">${esc(x.status||ACTIVE_STATUS)}</span></td></tr>`;
+}
+function horses(){
+  const list=activeHorses();
+  return `${pageHead('АДУУНЫ САН','Бүх адуу','Одоогоор сүрэгт байгаа адууг нэр, зүс, удам, гарал, сүргээр нь харна.',editOnly('<button class="primary-btn" onclick="openHorseForm()">＋ Адуу бүртгэх</button>'))}
+  ${list.length?`<div class="toolbar"><button class="filter-chip active" onclick="filterHorseRows('')">Бүгд</button><button class="filter-chip" onclick="filterHorseRows('Азарга')">Азарга</button><button class="filter-chip" onclick="filterHorseRows('Гүү')">Гүү</button><button class="filter-chip" onclick="filterHorseRows('Морь')">Морь</button><button class="filter-chip" onclick="filterHorseRows('Унага')">Унага</button><div class="spacer"></div><button class="filter-chip" onclick="go('archive')">▤ Гарсан адуу</button></div><div class="table-wrap"><table class="data-table"><thead><tr><th>Адуу</th><th>Төрөл</th><th>Төрсөн / нас</th><th>Зүс</th><th>Одоогийн сүрэг</th><th>Гарал</th><th>Төлөв</th></tr></thead><tbody>${list.map(horseRow).join('')}</tbody></table></div>`:emptyState('◈','Адуу бүртгэлгүй','Эхний адуугаа бүртгэж эхэлнэ үү.',editOnly('<button class="primary-btn" onclick="openHorseForm()">＋ Адуу бүртгэх</button>'))}`;
+}
+window.filterHorseRows=(kind)=>{ $$('.data-table tbody tr').forEach(r=>r.style.display=!kind||r.children[1]?.textContent.trim()===kind?'':'none'); };
+function photoForHorse(id){ return state.photos.filter(p=>p.horseId===id).sort((a,b)=>(b.createdAt||'').localeCompare(a.createdAt||''))[0] || null; }
+function horseVisual(x, cls='horse-photo', badge=''){ const p=photoForHorse(x.id); if(p)return `<div class="${cls} has-img" style="background-image:url('${p.dataUrl}')">${badge}</div>`; return `<div class="${cls}">${cls==='profile-photo'?'♞':''}${badge}</div>`; }
+function horseCard(x){ return `<article class="horse-card" onclick="openHorse('${x.id}')">${horseVisual(x,'horse-photo',`<span class="tag">${birthYearOf(x)||'—'}</span>`)}<div class="horse-card-body"><h3>${esc(x.display)}</h3><p>${esc(x.sire||'—')} × ${esc(x.dam||'—')}</p><div class="card-footer"><span>${esc(x.color||'—')} · ${x.sex}</span><span>${esc(x.herd||'—')}</span></div></div></article>`; }
+function horseDetail(){
+  const x=state.horses.find(h=>h.id===selectedHorseId); if(!x)return horses();
+  const rr=state.races.filter(r=>r.horseId===x.id);
+  const br=state.brandings.filter(b=>b.horseIds?.includes(x.id)).sort((a,b)=>String(b.date).localeCompare(String(a.date)));
+  const pp=state.photos.filter(p=>p.horseId===x.id).slice().reverse();
+  const foals=state.horses.filter(h=>h.sire===x.display || h.dam===x.display);
+  const statusHistory=state.statusEvents.filter(s=>s.horseId===x.id).slice().reverse();
+  const herdHistory=state.herdEvents.filter(s=>s.horseId===x.id).slice().reverse();
+  return `${pageHead('АДУУНЫ ПРОФАЙЛ',esc(x.display),`${esc(x.id)} · ${esc(x.color||'Зүсгүй')} · ${ageText(x.birthDate,x.birth)}`,'<button class="ghost-btn" onclick="go(\'horses\')">← Жагсаалт</button>')}
+  <div class="detail-layout">
+    <aside class="profile-card">${horseVisual(x,'profile-photo',`<span class="tag badge">${x.racing?'★ Уралдааны хүлэг':esc(x.status||x.sex)}</span>`)}<div class="profile-body"><h1>${esc(x.display)}</h1><p>${esc(x.sire||'Эцэг тодорхойгүй')} × ${esc(x.dam||'Эх тодорхойгүй')}</p><div class="profile-actions">${editOnly(`<button class="primary-btn" onclick="openHorseForm('${x.id}')">Засах</button><button class="secondary-btn" onclick="openPhotoForm('${x.id}')">＋ Зураг</button>`)}${adminOnly(`<button class="danger-btn" onclick="openDeleteHorseForm('${x.id}')">⌫ Устгах</button>`)}</div></div></aside>
+    <div class="info-sections">
+      <section class="info-panel"><h2>Ерөнхий мэдээлэл</h2><div class="info-grid">${info('Хүйс / төрөл',x.sex)}${info('Зүс',esc(x.color||'—'))}${info('Төрсөн огноо',x.birthDate?dateMn(x.birthDate):birthYearOf(x)||'—')}${info('Автомат нас',ageText(x.birthDate,x.birth))}${info(isActiveHorse(x)?'Одоогийн сүрэг':'Сүүлд байсан сүрэг',esc(isActiveHorse(x)?(x.herd||'—'):(x.lastHerd||'—')))}${info('Гарал',esc(x.origin||'—'))}${info('Төлөв',esc(x.status||ACTIVE_STATUS))}${!isActiveHorse(x)?info('Төлөв өөрчилсөн огноо',dateMn(x.statusDate)):''}${!isActiveHorse(x)&&x.statusPerson?info('Хүлээн авсан / холбогдох хүн',esc(x.statusPerson)):''}</div>${x.statusNote?`<div class="branding-note">${esc(x.statusNote)}</div>`:''}</section>
+      <section class="info-panel"><h2>Удам</h2><div class="pedigree-box"><div class="pedigree-parent"><small>ЭЦЭГ</small><b>${esc(x.sire||'Тодорхойгүй')}</b></div><div class="pedigree-lines">⟷</div><div class="pedigree-parent"><small>ЭХ</small><b>${esc(x.dam||'Тодорхойгүй')}</b></div></div></section>
+      <section class="info-panel"><h2>Тамга, им, таних тэмдэг</h2><div class="info-grid">${info('Тамга',esc(x.brand||'Тамгалаагүй'))}${info('Чихний им',esc(x.ear||'Имгүй'))}${info('Нэмэлт тэмдэглэл',esc(x.notes||'—'))}</div>${br.length?`<div class="branding-mini-list">${br.map(b=>`<div><b>${b.year} оны тамгалалт</b><small>${dateMn(b.date)} · ${esc(b.brand)}${b.location?` · ${esc(b.location)}`:''}</small></div>`).join('')}</div>`:''}</section>
+      ${foals.length?`<section class="info-panel"><h2>Үр төл — ${foals.length}</h2><div class="foal-list">${foals.map(f=>`<div class="foal-item" onclick="openHorse('${f.id}')"><div class="mini-avatar">◌</div><div><strong>${esc(f.display)}</strong><small>${birthYearOf(f)||'—'} · ${esc(f.color||'—')}</small></div></div>`).join('')}</div></section>`:''}
+      ${pp.length?`<section class="info-panel"><div class="panel-head compact"><h2>Зургийн архив — ${pp.length}</h2><button class="text-link" onclick="openPhotoForm('${x.id}')">＋ Зураг</button></div><div class="photo-strip">${pp.slice(0,8).map(p=>`<div class="photo-tile" style="background-image:url('${p.dataUrl}')"><span>${p.year||'—'} · ${esc(p.type)}</span></div>`).join('')}</div></section>`:''}
+      ${herdHistory.length?`<section class="info-panel"><h2>Сүргийн түүх</h2><div class="branding-mini-list">${herdHistory.map(s=>`<div><b>${esc(s.toHerd||'Сүрэггүй')}</b><small>${dateMn(s.date)}${s.fromHerd?` · Өмнө: ${esc(s.fromHerd)}`:''}</small></div>`).join('')}</div></section>`:''}
+      ${statusHistory.length?`<section class="info-panel"><h2>Төлөвийн түүх</h2><div class="branding-mini-list">${statusHistory.map(s=>`<div><b>${esc(s.toStatus)}</b><small>${dateMn(s.date)}${s.fromHerd?` · Сүүлд: ${esc(s.fromHerd)}`:''}${s.person?` · ${esc(s.person)}`:''}</small></div>`).join('')}</div></section>`:''}
+      ${x.racing?`<section class="info-panel"><div class="panel-head compact"><h2>Уралдааны амжилт</h2><button class="text-link" onclick="openRaceForm('${x.id}')">＋ Амжилт нэмэх</button></div>${rr.length?rr.map(raceResult).join(''):emptyState('★','Амжилт бүртгээгүй','Эхний уралдааны амжилтыг нэмнэ үү.')}</section>`:''}
+    </div>
+  </div>`;
+}
+function raceResult(r){const medals={1:'🥇',2:'🥈',3:'🥉',4:'4',5:'5'};return `<div class="race-result"><div class="place">${medals[r.place]||r.place||'—'}</div><div><strong>${esc(r.event)}</strong><p>${esc(r.category)} · ${esc(r.location||'—')} ${r.jockey?`· Унаач: ${esc(r.jockey)}`:''}${r.trainer?` · Уяач: ${esc(r.trainer)}`:''}${r.prize?` · ${esc(r.prize)}`:''}</p>${r.note?`<small>${esc(r.note)}</small>`:''}</div><time>${dateMn(r.date)}</time></div>`}
+function foals(){ const list=activeHorses().filter(x=>x.sex==='Унага'); return `${pageHead('УНАГА','Унаганы бүртгэл','Шинэ төрсөн унага, эх эцэг болон тухайн жилийн төлүүд.',editOnly('<button class="primary-btn" onclick="openFoalForm()">＋ Шинэ унага</button>'))}${list.length?`<div class="cards-grid">${list.map(horseCard).join('')}</div>`:emptyState('◌','Унага бүртгэлгүй','Шинэ унага төрөх бүрт энд бүртгэнэ.',editOnly('<button class="primary-btn" onclick="openFoalForm()">＋ Шинэ унага</button>'))}`; }
+function racing(){
+  const hs=state.horses.filter(x=>x.racing);
+  return `${pageHead('УРАЛДААН','Уралдааны хүлгүүд','Амжилт, насны ангилал, унаач, уяач болон фото архив.',editOnly('<button class="primary-btn" onclick="openRaceForm()">＋ Амжилт нэмэх</button>'))}${hs.length?`<div class="cards-grid">${hs.map(x=>{const rs=state.races.filter(r=>r.horseId===x.id),wins=rs.filter(r=>r.place===1).length,places=rs.filter(r=>r.place<=5).length;return `<article class="horse-card" onclick="openHorse('${x.id}')">${horseVisual(x,'horse-photo',`<span class="tag">★ ${birthYearOf(x)||'—'} · ${esc(x.color||'—')}</span>`)}<div class="horse-card-body"><h3>${esc(x.name||x.display)}</h3><p>${esc(x.sire||'—')} × ${esc(x.dam||'—')}</p><div class="card-footer"><span class="medal">🥇 ${wins} түрүү · ${places} айраг</span><span>${rs.length} уралдаан</span></div></div></article>`}).join('')}</div>`:emptyState('★','Уралдааны хүлэг бүртгэлгүй','Адууны мэдээлэл дээр “Уралдааны хүлэг” гэж тэмдэглэсний дараа энд гарна.')} ${state.races.length?`<div class="panel" style="margin-top:18px"><div class="panel-head"><h2>Сүүлийн амжилтууд</h2></div><div>${state.races.slice().sort((a,b)=>String(b.date).localeCompare(String(a.date))).map(raceResult).join('')}</div></div>`:''}`;
+}
+function pedigreeCard(h,label){ return `<div class="tree-card"><strong>${h?esc(h.display):'Тодорхойгүй'}</strong><small>${label}${h?` · ${birthYearOf(h)||'онгүй'}`:''}</small></div>`; }
+function pedigree(){
+  if(!state.horses.length)return `${pageHead('УДАМ','Удам гарлын мод','Адуу сонгоод удам гарлыг мод хэлбэрээр харна.')}${emptyState('⌘','Удам харах адуу алга','Эхлээд адуу бүртгэнэ үү.')}`;
+  let x=state.horses.find(h=>h.id===selectedHorseId)||state.horses[0]; selectedHorseId=x.id;
+  const sire=horseByDisplay(x.sire), dam=horseByDisplay(x.dam), ss=horseByDisplay(sire?.sire), sd=horseByDisplay(sire?.dam), ds=horseByDisplay(dam?.sire), dd=horseByDisplay(dam?.dam);
+  return `${pageHead('УДАМ','Удам гарлын мод','Эцэг, эх болон өвөг удмын холбоос.','<select class="filter-chip" onchange="selectPedigree(this.value)">'+state.horses.map(h=>`<option value="${h.id}" ${h.id===x.id?'selected':''}>${esc(h.display)}</option>`).join('')+'</select>')}<div class="panel"><div class="panel-head"><div><h2>${esc(x.display)} — 3 үеийн удам</h2><small>Бүртгэлтэй мэдээллээс автоматаар үүсгэв</small></div></div><div class="pedigree-tree"><div class="tree"><div class="gen">${pedigreeCard(ss,'Эцгийн эцэг')}${pedigreeCard(sd,'Эцгийн эх')}${pedigreeCard(ds,'Эхийн эцэг')}${pedigreeCard(dd,'Эхийн эх')}</div><div class="gen">${pedigreeCard(sire,'Эцэг')}${pedigreeCard(dam,'Эх')}</div><div class="gen"><div class="tree-card current"><strong>${esc(x.display)}</strong><small>${birthYearOf(x)||'—'} · ${esc(x.color||'—')}</small></div></div></div></div></div>`;
+}
+window.selectPedigree=(id)=>{selectedHorseId=id;currentView='pedigree';render();};
+
+function myBrand(){
+  const b=state.settings.familyBrand;
+  return `${pageHead('ГЭР БҮЛИЙН ТАМГА','Миний тамга','Танай гэр бүлийн үндсэн нэг тамгыг энд байнга хадгална.',editOnly(`<button class="primary-btn" onclick="openBrandForm()">${b.name?'Засах':'＋ Тамгаа бүртгэх'}</button>`))}
+  ${b.name||b.imageDataUrl?`<div class="brand-vault"><div class="brand-image-large ${b.imageDataUrl?'has-image':''}" ${b.imageDataUrl?`style="background-image:url('${b.imageDataUrl}')"`:''}>${b.imageDataUrl?'':'◆'}</div><div class="brand-vault-copy"><div class="eyebrow">БАЙНГЫН БҮРТГЭЛ</div><h2>${esc(b.name||'Нэр оруулаагүй')}</h2><div class="info-grid">${info('Ердийн байрлал',esc(b.defaultLocation||'—'))}${info('Тайлбар',esc(b.description||'—'))}${info('Тамгалалтын архив',state.brandings.length)}</div><p>Энэ тамга дараагийн бүх тамгалалтын бүртгэлд автоматаар сонгогдоно.</p><button class="primary-btn" onclick="openBrandForm()">Тамганы мэдээлэл засах</button></div></div>`:emptyState('◆','Танай тамга бүртгэлгүй','Тамганы зураг, нэр болон ердийн байрлалаа нэг удаа хадгална.','<button class="primary-btn" onclick="openBrandForm()">＋ Тамгаа бүртгэх</button>')}`;
+}
+function brandingTitle(b){ const yearFoals=(b.horseIds||[]).filter(id=>{const h=state.horses.find(x=>x.id===id);return birthYearOf(h)===+b.year && h?.sex==='Унага'}).length; return yearFoals?`${b.year} оны унага тамгалалт`:`${b.year} оны тамгалалт`; }
+function brandings(){
+  const sorted=state.brandings.slice().sort((a,b)=>String(b.date).localeCompare(String(a.date)));
+  const current=sorted.filter(x=>+x.year===CURRENT_YEAR); const countCurrent=new Set(current.flatMap(x=>x.horseIds||[])).size;
+  return `${pageHead('ТАМГАЛАЛТ','Тамгалалтын архив','Жил бүрийн унага болон нэмэлтээр тамгалсан адууг гэр бүлийн үндсэн тамгаар бүртгэнэ.',editOnly('<button class="primary-btn" onclick="openBrandingForm()">＋ Тамгалалт бүртгэх</button>'))}
+  <div class="stats-grid branding-stats">${stat(`${CURRENT_YEAR} оны бүртгэл`,current.length,'⌗','Тамгалалтын үйл явдал')}${stat(`${CURRENT_YEAR} онд тамгалсан`,countCurrent,'♞','Давхардлыг хассан адуу')}${stat('Нийт архив',sorted.length,'▤','Бүх жилийн бүртгэл')}</div>
+  ${sorted.length?`<div class="branding-grid">${sorted.map(b=>{const horses=(b.horseIds||[]).map(id=>state.horses.find(x=>x.id===id)).filter(Boolean),sameYear=horses.filter(h=>birthYearOf(h)===+b.year&&h.sex==='Унага').length,extras=horses.length-sameYear;return `<article class="branding-card"><div class="branding-year">${b.year}<small>${dateMn(b.date)}</small></div><div class="branding-content"><h3>${brandingTitle(b)}</h3><p>${esc(b.brand)}${b.location?` · ${esc(b.location)}`:''}</p><div class="branding-tags"><span>${horses.length} адуу</span><span>${sameYear} унага</span>${extras?`<span>＋${extras} бусад адуу</span>`:''}</div><div class="branding-horses">${horses.slice(0,8).map(h=>`<button onclick="openHorse('${h.id}')">${esc(h.display)}</button>`).join('')}${horses.length>8?`<small>+${horses.length-8} бусад</small>`:''}</div>${b.notes?`<div class="branding-note">${esc(b.notes)}</div>`:''}</div></article>`}).join('')}</div>`:emptyState('⌗','Тамгалалтын бүртгэл алга','Эхний жилийн тамгалалтаа бүртгэнэ үү.')}`;
+}
+function archive(){
+  const list=state.horses.filter(h=>!isActiveHorse(h));
+  const cards=INACTIVE_STATUSES.map(s=>stat(s,list.filter(h=>h.status===s).length,'▤','Архивын бүртгэл')).join('');
+  return `${pageHead('АРХИВ','Гарсан адуу','Зарсан, бэлэглэсэн, үрэгдсэн, хорогдсон, үхсэн болон алга болсон адуу бүртгэлээс устахгүй энд хадгалагдана.')}<div class="stats-grid archive-stats">${cards}</div>${list.length?`<div class="toolbar"><button class="filter-chip active" onclick="filterArchive('')">Бүгд</button>${INACTIVE_STATUSES.map(s=>`<button class="filter-chip" onclick="filterArchive('${s}')">${s}</button>`).join('')}</div><div class="table-wrap"><table class="data-table archive-table"><thead><tr><th>Адуу</th><th>Төлөв</th><th>Огноо</th><th>Сүүлд байсан сүрэг</th><th>Холбогдох хүн</th><th>Тайлбар</th></tr></thead><tbody>${list.map(h=>`<tr data-status="${esc(h.status)}" onclick="openHorse('${h.id}')"><td><b>${esc(h.display)}</b><br><small>${esc(h.id)} · ${ageText(h.birthDate,h.birth)}</small></td><td><span class="status ${statusClass(h.status)}">${esc(h.status)}</span></td><td>${dateMn(h.statusDate)}</td><td>${esc(h.lastHerd||'—')}</td><td>${esc(h.statusPerson||'—')}</td><td>${esc(h.statusNote||'—')}</td></tr>`).join('')}</tbody></table></div>`:emptyState('▤','Гарсан адуу алга','Зарсан, бэлэглэсэн эсвэл бусад төлөвт шилжсэн адуу энд автоматаар орно.')}`;
+}
+window.filterArchive=(s)=>{$$('.archive-table tbody tr').forEach(r=>r.style.display=!s||r.dataset.status===s?'':'none');};
+function deleted(){
+  if(!isAdmin()) return `${pageHead('ADMIN','Хандах эрхгүй','Устгасан адууны архивыг зөвхөн Admin харна.')}${emptyState('⌫','Admin эрх шаардлагатай','Энэ хэсэг бусад хэрэглэгчдэд database түвшинд хаалттай.')}`;
+  const list=deletedArchive;
+  return `${pageHead('ADMIN · НУУЦ АРХИВ','Устгасан адуу','Энд байгаа бүртгэл зөвхөн Admin-д харагдана. Устгасан адууг бүх мэдээлэл, зурагтай нь сэргээж болно.')}<div class="local-warning"><span class="admin-lock">🔒 ADMIN ONLY</span> Энэ архив тусдаа хамгаалагдсан database хүснэгтэд хадгалагддаг.</div>${list.length?`<div class="table-wrap"><table class="data-table"><thead><tr><th>Адуу</th><th>Устгасан огноо</th><th>Устгасан</th><th>Шалтгаан</th><th>Өмнөх төлөв</th><th></th></tr></thead><tbody>${list.map(row=>{const h=row.payload?.horse||{};return `<tr onclick="openDeletedHorse('${row.horse_id}')"><td><b>${esc(h.display||row.horse_id)}</b><br><small>${esc(row.horse_id)} · ${esc(h.color||'—')}</small></td><td>${row.deleted_at?new Date(row.deleted_at).toLocaleString('mn-MN'):'—'}</td><td>${esc(row.deleted_by_name||'Admin')}</td><td>${esc(row.deleted_reason||'—')}</td><td>${esc(h.status||ACTIVE_STATUS)}${h.herd?` · ${esc(h.herd)}`:''}</td><td><button class="restore-btn" onclick="event.stopPropagation();restoreDeletedHorse('${row.horse_id}')">↶ Сэргээх</button></td></tr>`}).join('')}</tbody></table></div>`:emptyState('⌫','Устгасан адуу алга','Адууны профайл дээр “Устгах” товч дарахад энэ Admin архивт орно.')}`;
+}
+window.openDeletedHorse=(horseId)=>{
+  if(!isAdmin()){toast('Зөвхөн Admin харна.');return;}
+  const row=deletedArchive.find(x=>x.horse_id===horseId); if(!row)return;
+  const h=row.payload?.horse||{},photos=row.payload?.photos||[],p=photos[photos.length-1]||photos[0];
+  showModal('Устгасан адуу',`<div class="form-body"><div class="deleted-preview" ${p?.dataUrl?`style="background-image:url('${p.dataUrl}')"`:''}>${p?.dataUrl?'':'♞'}</div><div class="deleted-banner"><b>Admin-only архив.</b><br>Устгасан: ${row.deleted_at?new Date(row.deleted_at).toLocaleString('mn-MN'):'—'} · ${esc(row.deleted_by_name||'Admin')}${row.deleted_reason?`<br>Шалтгаан: ${esc(row.deleted_reason)}`:''}</div><div class="info-grid" style="margin-top:15px">${info('Адуу',esc(h.display||horseId))}${info('Бүртгэлийн №',esc(h.id||horseId))}${info('Төрөл',esc(h.sex||'—'))}${info('Зүс',esc(h.color||'—'))}${info('Төрсөн огноо',h.birthDate?dateMn(h.birthDate):(h.birth||'—'))}${info('Нас',ageText(h.birthDate,h.birth))}${info('Сүрэг',esc(h.herd||h.lastHerd||'—'))}${info('Эцэг',esc(h.sire||'—'))}${info('Эх',esc(h.dam||'—'))}${info('Зургийн архив',photos.length)}${info('Уралдааны амжилт',(row.payload?.races||[]).length)}${info('Төлөв',esc(h.status||ACTIVE_STATUS))}</div><div class="form-actions"><button class="ghost-btn" onclick="closeModal()">Хаах</button><button class="restore-btn" onclick="restoreDeletedHorse('${horseId}')">↶ Бүртгэлд сэргээх</button></div></div>`);
+};
+window.restoreDeletedHorse=async(horseId)=>{
+  if(!isAdmin()){toast('Зөвхөн Admin сэргээнэ.');return;}
+  try{await manageHorseDeletion('restore',horseId); await loadCloudState(); closeModal(); currentView='horses'; render(); toast('Адуу бүх мэдээлэлтэйгээ сэргээгдлээ');}
+  catch(e){console.error(e);toast(e.message||'Сэргээхэд алдаа гарлаа');}
+};
+function gallery(){ const photos=state.photos.slice().reverse(); return `${pageHead('ЗУРАГ','Зургийн сан','Адуу тус бүрийн олон жилийн зураг, тамганы зураг болон уралдааны агшин.',editOnly('<button class="primary-btn" onclick="openPhotoForm()">＋ Зураг нэмэх</button>'))}${photos.length?`<div class="photo-gallery">${photos.map(p=>{const h=state.horses.find(x=>x.id===p.horseId);return `<article class="gallery-photo" onclick="openHorse('${p.horseId}')"><div style="background-image:url('${p.dataUrl}')"></div><section><b>${esc(h?.display||'Адуу')}</b><span>${p.year||'—'} · ${esc(p.type)}</span>${p.caption?`<small>${esc(p.caption)}</small>`:''}</section></article>`}).join('')}</div>`:emptyState('▣','Одоогоор зураг алга','“Зураг нэмэх” товчоор компьютер эсвэл утаснаасаа зураг оруулна.')}`; }
+function members(){
+  return `${pageHead('ХЭРЭГЛЭГЧ','Гэр бүлийн хэрэглэгчид','Гэр бүлийн хүн бүр өөрийн username/password-тай, нэг shared cloud мэдээлэл дээр ажиллана.',adminOnly('<button class="primary-btn" onclick="openMemberForm()">＋ Хэрэглэгч</button>'))}${state.members.length?`<div class="table-wrap"><table class="data-table"><thead><tr><th>Хэрэглэгч</th><th>Username</th><th>Эрх</th><th>Үүсгэсэн</th><th>Төлөв</th></tr></thead><tbody>${state.members.map(m=>`<tr><td><div class="mini-horse"><div class="avatar">${initials(m.name)}</div><b>${esc(m.name)}</b></div></td><td>${esc(m.username)}</td><td>${esc(m.role)}</td><td>${dateMn(m.createdAt?.slice(0,10))}</td><td><span class="status ok">Идэвхтэй</span></td></tr>`).join('')}</tbody></table></div>`:''}${isAdmin()?'<div class="local-warning"><b>Эрхийн тайлбар:</b> Admin — хэрэглэгч болон бүх мэдээллийг удирдана. Editor — адууны мэдээлэл нэмэх/засах эрхтэй. View only — зөвхөн харна.</div>':''}`;
+}
+function settings(){
+  const general=isAdmin()?`<form class="info-panel" id="settingsForm"><h2>Ерөнхий</h2><div class="form-grid"><div class="field full"><label>Системийн нэр</label><input name="appTitle" value="${esc(state.settings.appTitle||'Удмын Хүлэг')}"></div><div class="field full"><label>Гэр бүлийн нэр / тайлбар</label><input name="familyTitle" value="${esc(state.settings.familyTitle||'')}"></div><div class="field"><label>Бүртгэлийн дугаарын эхлэл</label><input name="registryPrefix" value="${esc(state.settings.registryPrefix||'A-')}"></div></div><div class="form-actions"><button class="primary-btn" type="submit">Хадгалах</button></div></form>`:`<div class="info-panel"><h2>Ерөнхий</h2><div class="info-grid">${info('Системийн нэр',esc(state.settings.appTitle||'Удмын Хүлэг'))}${info('Гэр бүлийн тайлбар',esc(state.settings.familyTitle||'—'))}${info('Бүртгэлийн дугаар',esc(state.settings.registryPrefix||'A-'))}</div><p style="font-size:11px;color:#777">Тохиргоог зөвхөн Admin өөрчилнө.</p></div>`;
+  const appearance=`<div class="info-panel appearance-panel"><h2>Харагдац</h2><p style="font-size:11px;color:var(--muted);line-height:1.7">Light / Dark горимоос сонгоно. Энэ сонголт тухайн төхөөрөмж дээр автоматаар санагдана.</p><div class="appearance-choices"><button type="button" class="appearance-choice ${getTheme()==='light'?'current':''}" data-theme-choice="light" onclick="setTheme('light')"><span>☀</span><div><strong>Light</strong><small>Цайвар, өдөр ашиглахад тохиромжтой</small></div></button><button type="button" class="appearance-choice ${getTheme()==='dark'?'current':''}" data-theme-choice="dark" onclick="setTheme('dark')"><span>☾</span><div><strong>Dark</strong><small>Бараан, орой болон бүдэг орчинд</small></div></button></div></div>`;
+  return `${pageHead('ТОХИРГОО','Системийн тохиргоо','Системийн нэр, гэр бүлийн тайлбар, бүртгэлийн дүрэм болон харагдац.')}<div class="grid-2">${general}<div class="info-panel"><h2>Зүсний сан</h2><p style="font-size:11px;color:var(--muted);line-height:1.7">Шинэ адуу эсвэл унага бүртгэх үед “＋ Шинэ зүс” сонгож шууд нэмэх боломжтой.</p><div class="branding-tags">${state.colors.map(c=>`<span>${esc(c)}</span>`).join('')}</div></div></div>${appearance}`;
+}
+
+function render(){ const map={dashboard,herds,horses,foals,racing,pedigree,myBrand,brandings,archive,deleted,gallery,members,settings,horseDetail}; $('#viewContainer').innerHTML=(map[currentView]||dashboard)(); $$('.nav-item[data-view]').forEach(x=>x.classList.toggle('active',x.dataset.view===currentView)); syncShell(); window.scrollTo({top:0,behavior:'instant'}); }
+window.go=(v)=>{if(v==='deleted'&&!isAdmin()){toast('Устгасан адууг зөвхөн Admin харна.');return;}currentView=v;render();closeSidebar();};
+window.openHorse=(id)=>{selectedHorseId=id;currentView='horseDetail';render();};
+
+function showModal(title,body){$('#modalTitle').textContent=title;$('#modalBody').innerHTML=body;$('#modalBackdrop').hidden=false;}
+function closeModal(){ $('#modalBackdrop').hidden=true; }
+window.closeModal=closeModal;
+function inlineParentField(label,name,kind,selected=''){
+  const items=state.horses.filter(x=>x.sex===kind).map(x=>x.display); if(selected&&!items.includes(selected))items.unshift(selected);
+  return `<div class="field"><label>${label}</label><select name="${name}" data-inline-create="${name}"><option value="">— Сонгох —</option>${optionList(items,selected)}<option value="__new__">＋ Шинээр үүсгэх</option></select><div class="inline-create" data-inline-field="${name}" hidden><input name="${name}_new" placeholder="Таних нэр / нэршил"><div class="inline-two"><input name="${name}_new_color" placeholder="Зүс"><input name="${name}_new_birth_date" type="date"></div><small>Энд үүсгэсэн адуу адууны санд мөн автоматаар нэмэгдэнэ.</small></div></div>`;
+}
+function colorField(selected=''){ return `<div class="field"><label>ЗҮС *</label><select name="color" required data-inline-create="color"><option value="">— Сонгох —</option>${optionList(state.colors,selected)}<option value="__new__">＋ Шинэ зүс нэмэх</option></select><div class="inline-create" data-inline-field="color" hidden><input name="color_new" placeholder="Жишээ: Цагаан цоохор"><small>Нэмсэн зүс дараагийн бүртгэлд сонголт болж хадгалагдана.</small></div></div>`; }
+function photoInput(name='photo',label='ЗУРАГ',required=false){ return `<div class="field full"><label>${label}</label><label class="upload-box upload-live"><input type="file" name="${name}" accept="image/*" ${required?'required':''}><span class="upload-icon">▣</span><strong>Зураг сонгох / камераар авах</strong><small>JPG, PNG болон browser дэмждэг утасны зураг.</small><img class="upload-preview" alt="Сонгосон зураг" hidden></label></div>`; }
+function statusFields(x){
+  const inactive=x && !isActiveHorse(x);
+  return `<div class="field"><label>ТӨЛӨВ *</label><select name="status" id="horseStatusSelect">${optionList([ACTIVE_STATUS,...INACTIVE_STATUSES],x?.status||ACTIVE_STATUS)}</select></div><div class="field"><label>СҮРЭГ</label><select name="herd" id="horseHerdSelect"><option value="">— Сонгох —</option>${optionList(state.herds.filter(h=>h.isActive!==false).map(h=>h.name),x?.herd||'')}</select></div><div class="field full status-transition" id="statusTransition" ${inactive?'':'hidden'}><div class="status-transition-grid"><label>ТӨЛӨВ ӨӨРЧИЛСӨН ОГНОО<input type="date" name="statusDate" value="${x?.statusDate||localDate()}"></label><label>ХҮЛЭЭН АВСАН / ХОЛБОГДОХ ХҮН<input name="statusPerson" value="${esc(x?.statusPerson||'')}" placeholder="Зарсан, бэлэглэсэн үед"></label><label class="full">ТАЙЛБАР / ШАЛТГААН<textarea name="statusNote" rows="2">${esc(x?.statusNote||'')}</textarea></label></div></div>`;
+}
+window.openFoalForm=()=>{if(!canEdit()){toast('Танд зөвхөн харах эрх байна.');return;}showModal('Шинэ унага бүртгэх',`<form class="form-body" id="foalForm"><div class="form-grid">${inlineParentField('ЭХ ГҮҮ *','dam','Гүү')}${inlineParentField('ЭЦЭГ АЗАРГА *','sire','Азарга')}<div class="field"><label>ТӨРСӨН ОГНОО *</label><input type="date" name="date" value="${localDate()}" required></div><div class="field"><label>ХҮЙС *</label><select name="gender"><option>Эр</option><option>Эм</option></select></div>${colorField()}<div class="field"><label>НЭР (БАЙВАЛ)</label><input name="name" placeholder="Нэргүй байж болно"></div><div class="field"><label>СҮРЭГ</label><select name="herd"><option value="">— Сонгох —</option>${optionList(state.herds.filter(h=>h.isActive!==false).map(h=>h.name))}</select></div><div class="field"><label>ЧИХНИЙ ИМ</label><input name="ear" placeholder="Жишээ: Зүүн чих цуулбар"></div>${photoInput('photo','АНХНЫ ЗУРАГ')}<div class="field full"><label>НЭМЭЛТ ТЭМДЭГЛЭЛ</label><textarea name="note" rows="3"></textarea></div></div>${formActions('Унага бүртгэх')}</form>`);};
+window.openHorseForm=(id='')=>{
+  if(!canEdit()){toast('Танд зөвхөн харах эрх байна.');return;}
+  const x=id?state.horses.find(h=>h.id===id):null;
+  const dateVal=x?.birthDate || (x?.birth?`${x.birth}-01-01`:'');
+  showModal(x?'Адууны мэдээлэл засах':'Шинэ адуу бүртгэх',`<form class="form-body" id="horseForm"><input type="hidden" name="horseId" value="${x?.id||''}"><div class="form-grid"><div class="field"><label>НЭР (БАЙВАЛ)</label><input name="name" value="${esc(x?.name||'')}" placeholder="Нэргүй байж болно"></div><div class="field"><label>ТӨРӨЛ *</label><select name="sex">${optionList(['Азарга','Гүү','Морь','Унага'],x?.sex||'Морь')}</select></div>${colorField(x?.color||'')}<div class="field"><label>ТӨРСӨН ОГНОО</label><input name="birthDate" type="date" value="${dateVal}"><small class="age-live" id="liveAge">${dateVal?`Нас: ${ageText(dateVal)}`:'Огноо оруулахад нас автоматаар бодогдоно'}</small></div>${inlineParentField('ЭЦЭГ АЗАРГА','sire','Азарга',x?.sire||'')}${inlineParentField('ЭХ ГҮҮ','dam','Гүү',x?.dam||'')}${statusFields(x)}<div class="field full"><label>ГАРАЛ / ХААНААС ИРСЭН</label><input name="origin" value="${esc(x?.origin||'')}" placeholder="Өөрийн адуунаас төрсөн / сум, аймаг"></div><div class="field"><label>ЧИХНИЙ ИМ</label><input name="ear" value="${esc(x?.ear||'')}"></div><div class="field"><label>ТАМГА</label><input value="${esc(x?.brand||state.settings.familyBrand.name||'Тамгалаагүй')}" disabled><small>Тамгалалтыг “Миний тамга / Тамгалалт” хэсгээс бүртгэнэ.</small></div>${photoInput('photo',x?'НЭМЭЛТ ЗУРАГ':'АНХНЫ ЗУРАГ')}<div class="field full"><label>НЭМЭЛТ ТЭМДЭГЛЭЛ</label><textarea name="note" rows="3">${esc(x?.notes||'')}</textarea></div><div class="field full checkbox-field"><label><input name="racing" type="checkbox" ${x?.racing?'checked':''}> Уралдааны хүлэг болгон тэмдэглэх</label></div></div>${formActions(x?'Өөрчлөлт хадгалах':'Адуу бүртгэх')}</form>`);
+};
+window.openRaceForm=(horseId='')=>{
+  if(!canEdit()){toast('Танд зөвхөн харах эрх байна.');return;}
+  const eligible=state.horses.filter(x=>x.racing); if(!eligible.length){showModal('Уралдааны амжилт',emptyState('★','Уралдааны хүлэг алга','Эхлээд адууны мэдээлэл дээр “Уралдааны хүлэг” гэж тэмдэглэнэ үү.'));return;}
+  const hx=state.horses.find(x=>x.id===horseId);
+  showModal('Уралдааны амжилт нэмэх',`<form class="form-body" id="raceForm"><div class="form-grid"><div class="field full"><label>ХҮЛЭГ *</label><select name="horseId">${eligible.map(x=>`<option value="${x.id}" ${hx?.id===x.id?'selected':''}>${esc(x.name||x.display)}</option>`).join('')}</select></div><div class="field"><label>УРАЛДААНЫ ОГНОО</label><input name="date" type="date" value="${localDate()}"></div><div class="field"><label>АНГИЛАЛ</label><select name="category"><option>Даага</option><option>Шүдлэн</option><option>Хязаалан</option><option>Соёолон</option><option>Их нас</option><option>Азарга</option></select></div><div class="field full"><label>УРАЛДААН / НААДМЫН НЭР</label><input name="event" required></div><div class="field"><label>БАЙР</label><input name="place" type="number" min="1"></div><div class="field"><label>ГАЗАР</label><input name="location"></div><div class="field"><label>УНААЧ</label><input name="jockey"></div><div class="field"><label>УЯАЧ</label><input name="trainer"></div><div class="field"><label>ШАГНАЛ / БАЙ</label><input name="prize" placeholder="Жишээ: Өргөмжлөл, шагнал"></div><div class="field full"><label>ТАЙЛБАР</label><textarea name="note" rows="2"></textarea></div></div>${formActions('Амжилт хадгалах')}</form>`);
+};
+window.openPhotoForm=(horseId='')=>{
+  if(!canEdit()){toast('Танд зөвхөн харах эрх байна.');return;}
+  if(!state.horses.length){showModal('Зураг нэмэх',emptyState('▣','Адуу бүртгэлгүй','Эхлээд адуу бүртгэнэ үү.'));return;}
+  showModal('Зураг нэмэх',`<form class="form-body" id="photoForm"><div class="form-grid"><div class="field full"><label>АДУУ *</label><select name="horseId" required>${state.horses.map(x=>`<option value="${x.id}" ${horseId===x.id?'selected':''}>${esc(x.display)}</option>`).join('')}</select></div>${photoInput('photo','ЗУРАГ *',true)}<div class="field"><label>ЗУРГИЙН ОН</label><input name="year" type="number" value="${CURRENT_YEAR}"></div><div class="field"><label>ТӨРӨЛ</label><select name="type"><option>Ерөнхий зураг</option><option>Тамганы зураг</option><option>Уралдааны зураг</option><option>Чихний им</option></select></div><div class="field full"><label>ТАЙЛБАР</label><input name="caption"></div></div>${formActions('Зураг хадгалах')}</form>`);
+};
+function brandingChecklist(year=CURRENT_YEAR){
+  const ordered=activeHorses().slice().sort((a,b)=>Number(birthYearOf(b)===+year)-Number(birthYearOf(a)===+year)||(birthYearOf(b)||0)-(birthYearOf(a)||0));
+  if(!ordered.length)return emptyState('♞','Сонгох адуу алга','Эхлээд адуу бүртгэнэ үү.');
+  return `<div class="branding-check-actions"><button type="button" class="secondary-btn" onclick="selectYearFoals(${+year})">${year} оны унагануудыг бүгдийг сонгох</button><button type="button" class="ghost-btn" onclick="clearBrandingChecks()">Сонголт цэвэрлэх</button></div><div class="horse-check-grid">${ordered.map(h=>`<label class="horse-check ${birthYearOf(h)===+year&&h.sex==='Унага'?'year-foal':''}"><input type="checkbox" name="horseIds" value="${h.id}" data-birth="${birthYearOf(h)||''}" data-kind="${h.sex}"><span><b>${esc(h.display)}</b><small>${birthYearOf(h)||'—'} · ${esc(h.color||'—')} · ${h.sex}</small></span></label>`).join('')}</div>`;
+}
+window.openBrandingForm=()=>{
+  if(!canEdit()){toast('Танд зөвхөн харах эрх байна.');return;}
+  const b=state.settings.familyBrand;
+  if(!b.name){showModal('Тамгалалт бүртгэх',`<div class="form-body">${emptyState('◆','Эхлээд гэр бүлийн тамгаа бүртгэнэ үү','“Миний тамга” хэсэгт үндсэн тамганы нэр, зураг, байрлалаа хадгалсны дараа жилийн тамгалалт бүртгэнэ.','<button class="primary-btn" onclick="closeModal();go(\'myBrand\')">Миний тамга руу очих</button>')}</div>`);return;}
+  showModal('Тамгалалт бүртгэх',`<form class="form-body" id="brandingForm"><div class="form-grid"><div class="field full"><label>ГЭР БҮЛИЙН ҮНДСЭН ТАМГА</label><div class="brand-inline">${b.imageDataUrl?`<div class="brand-inline-image" style="background-image:url('${b.imageDataUrl}')"></div>`:'<div class="brand-inline-image">◆</div>'}<div><strong>${esc(b.name)}</strong><small>${esc(b.defaultLocation||'Байрлал оруулаагүй')}</small></div></div><input type="hidden" name="brand" value="${esc(b.name)}"></div><div class="field"><label>ОН *</label><input name="year" id="brandingYear" type="number" value="${CURRENT_YEAR}" min="1900" max="2200"></div><div class="field"><label>ОГНОО *</label><input name="date" type="date" value="${localDate()}" required></div><div class="field full"><label>ТАМГАЛСАН БАЙРЛАЛ</label><input name="location" value="${esc(b.defaultLocation||'')}"></div><div class="field full"><label>ТАМГАЛСАН АДУУНУУД *</label><div id="brandingChecklist">${brandingChecklist(CURRENT_YEAR)}</div></div>${photoInput('brandingPhoto','ТУХАЙН ТАМГАЛАЛТЫН ЗУРАГ')}<div class="field full"><label>ТАЙЛБАР</label><textarea name="notes" rows="3"></textarea></div></div>${formActions('Тамгалалт хадгалах')}</form>`);
+};
+window.selectYearFoals=(year)=>{$$('#brandingForm input[name="horseIds"]').forEach(c=>{c.checked=(+c.dataset.birth===+year&&c.dataset.kind==='Унага')});};
+window.clearBrandingChecks=()=>{$$('#brandingForm input[name="horseIds"]').forEach(c=>c.checked=false);};
+window.refreshBrandingChecklist=(year)=>{const el=$('#brandingChecklist');if(el)el.innerHTML=brandingChecklist(+year||CURRENT_YEAR);};
+window.openBrandForm=()=>{
+  if(!canEdit()){toast('Танд зөвхөн харах эрх байна.');return;}
+  const b=state.settings.familyBrand;
+  showModal('Гэр бүлийн тамга',`<form class="form-body" id="brandForm"><div class="form-grid"><div class="field full"><label>ТАМГАНЫ НЭР / ТАНИХ НЭР *</label><input name="name" required value="${esc(b.name||'')}" placeholder="Жишээ: Манай гэр бүлийн тамга"></div><div class="field full"><label>ЕРДИЙН ТАМГАЛДАГ БАЙРЛАЛ</label><input name="defaultLocation" value="${esc(b.defaultLocation||'')}" placeholder="Жишээ: Баруун гуя"></div>${photoInput('brandImage',b.imageDataUrl?'ТАМГАНЫ ЗУРГИЙГ СОЛИХ':'ТАМГАНЫ ЗУРАГ')}<div class="field full"><label>ТАЙЛБАР</label><textarea name="description" rows="3">${esc(b.description||'')}</textarea></div>${b.imageDataUrl?`<div class="field full"><div class="saved-brand-preview"><div style="background-image:url('${b.imageDataUrl}')"></div><span>Одоогийн хадгалсан тамганы зураг</span></div></div>`:''}</div>${formActions('Тамга хадгалах')}</form>`);
+};
+window.openHerdForm=()=>{if(!canEdit()){toast('Танд зөвхөн харах эрх байна.');return;}showModal('Шинэ сүрэг үүсгэх',`<form class="form-body" id="herdForm"><div class="form-grid"><div class="field full"><label>СҮРГИЙН НЭР *</label><input name="name" required placeholder="Жишээ: Хээр азарганы сүрэг"></div><div class="field full"><label>ТОЛГОЙ АЗАРГА</label><select name="stallion"><option value="">— Сонгох —</option>${optionList(state.horses.filter(h=>h.sex==='Азарга').map(h=>h.display))}</select></div><div class="field"><label>ЭХЭЛСЭН ОГНОО</label><input name="startDate" type="date"></div></div>${formActions('Сүрэг үүсгэх')}</form>`);};
+window.openMemberForm=()=>{if(!isAdmin()){toast('Зөвхөн Admin хэрэглэгч нэмнэ.');return;}showModal('Гэр бүлийн хэрэглэгч нэмэх',`<form class="form-body" id="memberForm"><div class="form-grid"><div class="field"><label>НЭР *</label><input name="name" required></div><div class="field"><label>USERNAME *</label><input name="username" required autocomplete="off"></div><div class="field"><label>ЭРХ</label><select name="role"><option>Editor</option><option>Admin</option><option>View only</option></select></div><div class="field"><label>НУУЦ ҮГ *</label><input name="password" required type="password" autocomplete="new-password"></div></div>${formActions('Хэрэглэгч нэмэх')}</form>`);};
+window.openDeleteHorseForm=(id)=>{
+  if(!isAdmin()){toast('Зөвхөн Admin адуу устгана.');return;}
+  const h=state.horses.find(x=>x.id===id); if(!h)return;
+  showModal('Адуу устгах',`<form class="form-body" id="deleteHorseForm"><input type="hidden" name="horseId" value="${h.id}"><div class="deleted-banner"><b>${esc(h.display)}</b> бүртгэлийг устгавал үндсэн сан, сүрэг, зурагны сан, уралдааны жагсаалтаас алга болно. Бүх мэдээлэл, зураг нь Admin-only архивт хадгалагдана.</div><div class="form-grid" style="margin-top:15px"><div class="field full"><label>УСТГАСАН ШАЛТГААН</label><textarea name="reason" rows="3" placeholder="Жишээ: Давхар бүртгэл / андуурч бүртгэсэн"></textarea></div></div><div class="form-actions"><button type="button" class="ghost-btn" onclick="closeModal()">Болих</button><button type="submit" class="danger-btn">⌫ Устгах</button></div></form>`);
+};
+
+function parentFromForm(fd,name,kind){
+  const chosen=fd.get(name); if(chosen!=='__new__')return chosen||'';
+  const display=(fd.get(`${name}_new`)||'').trim(); if(!display)return '';
+  const existing=state.horses.find(h=>h.display.toLowerCase()===display.toLowerCase()); if(existing)return existing.display;
+  const color=(fd.get(`${name}_new_color`)||'Тодорхойгүй').trim(); const birthDate=fd.get(`${name}_new_birth_date`)||'';
+  const horse={id:nextHorseId(),display,name:'',sex:kind,color,birthDate,birth:birthDate?+birthDate.slice(0,4):null,herd:'',lastHerd:'',origin:'Шуурхай бүртгэлээр шинээр үүсгэсэн',sire:'',dam:'',brand:'',ear:'',status:ACTIVE_STATUS,racing:false,notes:'Унага/адуу бүртгэх үеэр шууд үүсгэсэн.'};
+  state.horses.push(horse); addActivity('♞',`Шинэ ${kind.toLowerCase()} үүсгэлээ`,display); return display;
+}
+function colorFromForm(fd){ let c=fd.get('color'); if(c==='__new__'){c=(fd.get('color_new')||'').trim(); if(c&&!state.colors.some(x=>x.toLowerCase()===c.toLowerCase()))state.colors.push(c);} return c||'Тодорхойгүй'; }
+function displayNameForHorse({name,sex,color,birthDate,dam}){ if(name?.trim())return name.trim(); const y=birthDate?.slice(0,4)||''; if(sex==='Гүү')return `${color||''} гүү`.trim(); if(sex==='Азарга')return `${color||''} азарга`.trim(); if(sex==='Морь')return `${color||''} морь`.trim(); return `${(dam||'Эх тодорхойгүй').replace(/ гүү$/,'')} гүүний ${y} оны ${String(color||'').toLowerCase()} унага`.trim(); }
+async function compressImage(file){
+  if(!file||!file.size)return '';
+  const raw=await new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=reject;r.readAsDataURL(file)});
+  return await new Promise(resolve=>{const img=new Image();img.onload=()=>{const max=1200,scale=Math.min(1,max/Math.max(img.width,img.height)),w=Math.max(1,Math.round(img.width*scale)),h=Math.max(1,Math.round(img.height*scale)),c=document.createElement('canvas');c.width=w;c.height=h;const ctx=c.getContext('2d');ctx.drawImage(img,0,0,w,h);resolve(c.toDataURL('image/jpeg',0.78));};img.onerror=()=>resolve(raw);img.src=raw;});
+}
+async function addPhotoFromFile(file,horseId,year=CURRENT_YEAR,type='Ерөнхий зураг',caption=''){ if(!file||!file.size)return null; const uploaded=await uploadPrivateImage(file,'horses'); const p={id:`P-${Date.now()}-${Math.random().toString(36).slice(2,6)}`,horseId,path:uploaded.path,dataUrl:uploaded.url,year:+year||CURRENT_YEAR,type,caption,createdAt:new Date().toISOString()}; state.photos.push(p); return p; }
+async function passwordHash(value){
+  try{const data=new TextEncoder().encode(value);const hash=await crypto.subtle.digest('SHA-256',data);return [...new Uint8Array(hash)].map(b=>b.toString(16).padStart(2,'0')).join('');}
+  catch{return btoa(unescape(encodeURIComponent(value)));}
+}
+async function handleSubmit(e){
+  const mutationForms=['foalForm','horseForm','raceForm','photoForm','brandForm','brandingForm','herdForm','settingsForm'];
+  if(mutationForms.includes(e.target.id) && !canEdit()){ e.preventDefault(); toast('Танд зөвхөн харах эрх байна.'); return; }
+  if(e.target.id==='memberForm' && !isAdmin()){ e.preventDefault(); toast('Зөвхөн Admin хэрэглэгч нэмнэ.'); return; }
+  if(e.target.id==='deleteHorseForm'){
+    e.preventDefault(); if(!isAdmin()){toast('Зөвхөн Admin адуу устгана.');return;} const fd=new FormData(e.target),horseId=fd.get('horseId'),reason=(fd.get('reason')||'').trim(); try{await manageHorseDeletion('delete',horseId,reason); await loadCloudState(); closeModal(); selectedHorseId=''; currentView='deleted'; render(); toast('Адуу Admin-only архивт хадгалагдлаа');}catch(err){console.error(err);toast(err.message||'Устгахад алдаа гарлаа');} return;
+  }
+  if(e.target.id==='foalForm'){
+    e.preventDefault(); const fd=new FormData(e.target),birthDate=fd.get('date'),y=+birthDate.slice(0,4),gender=fd.get('gender'),color=colorFromForm(fd),dam=parentFromForm(fd,'dam','Гүү'),sire=parentFromForm(fd,'sire','Азарга');
+    if(!dam||!sire){toast('Эх гүү болон эцэг азаргыг сонгоно уу.');return;}
+    const name=(fd.get('name')||'').trim(),display=name||`${dam.replace(/ гүү$/,'')} гүүний ${y} оны ${color.toLowerCase()} ${gender==='Эр'?'эр':'охин'}`;
+    const horse={id:nextHorseId(),display,name,sex:'Унага',color,birthDate,birth:y,herd:fd.get('herd')||'',lastHerd:'',origin:'Өөрийн адуунаас төрсөн',sire,dam,brand:'',ear:fd.get('ear')||'',status:ACTIVE_STATUS,racing:false,notes:fd.get('note')||''};
+    state.horses.unshift(horse); if(horse.herd)state.herdEvents.push({id:`HIST-${Date.now()}`,horseId:horse.id,fromHerd:'',toHerd:horse.herd,date:birthDate||localDate()}); await addPhotoFromFile(e.target.elements.photo.files?.[0],horse.id,y,'Ерөнхий зураг','Анхны бүртгэлийн зураг'); addActivity('◌','Шинэ унага бүртгэлээ',display); save(); closeModal(); toast('Унага амжилттай бүртгэгдлээ'); currentView='foals'; render(); return;
+  }
+  if(e.target.id==='horseForm'){
+    e.preventDefault(); const fd=new FormData(e.target),id=fd.get('horseId'),color=colorFromForm(fd),sex=fd.get('sex'),birthDate=fd.get('birthDate')||'',birth=birthDate?+birthDate.slice(0,4):null,sire=parentFromForm(fd,'sire','Азарга'),dam=parentFromForm(fd,'dam','Гүү'),name=(fd.get('name')||'').trim(),newStatus=fd.get('status')||ACTIVE_STATUS;
+    const old=id?state.horses.find(h=>h.id===id):null; let herd=fd.get('herd')||'',lastHerd=old?.lastHerd||'';
+    if(newStatus!==ACTIVE_STATUS){ lastHerd=old?.herd||old?.lastHerd||herd||''; herd=''; }
+    const obj={name,sex,color,birthDate,birth,sire,dam,herd,lastHerd,origin:fd.get('origin')||'',ear:fd.get('ear')||'',status:newStatus,racing:fd.get('racing')==='on',notes:fd.get('note')||'',statusDate:newStatus!==ACTIVE_STATUS?(fd.get('statusDate')||localDate()):'',statusPerson:newStatus!==ACTIVE_STATUS?(fd.get('statusPerson')||''):'',statusNote:newStatus!==ACTIVE_STATUS?(fd.get('statusNote')||''):''};
+    obj.display=displayNameForHorse({...obj}); let horse;
+    if(id){ horse=old; const prevStatus=horse.status||ACTIVE_STATUS,prevHerd=horse.herd||horse.lastHerd||''; Object.assign(horse,obj); if(prevStatus!==newStatus){state.statusEvents.push({id:`S-${Date.now()}`,horseId:id,fromStatus:prevStatus,toStatus:newStatus,date:obj.statusDate||localDate(),fromHerd:prevHerd,person:obj.statusPerson,note:obj.statusNote}); addActivity('▤','Адууны төлөв өөрчиллөө',`${horse.display} → ${newStatus}`);} if(newStatus===ACTIVE_STATUS && prevHerd!==(horse.herd||'')){state.herdEvents.push({id:`HIST-${Date.now()}`,horseId:id,fromHerd:prevHerd,toHerd:horse.herd||'',date:localDate()});addActivity('♞','Сүрэг шилжүүллээ',`${horse.display}: ${prevHerd||'Сүрэггүй'} → ${horse.herd||'Сүрэггүй'}`);} }
+    else { horse={id:nextHorseId(),...obj,brand:''}; state.horses.unshift(horse); if(horse.herd)state.herdEvents.push({id:`HIST-${Date.now()}`,horseId:horse.id,fromHerd:'',toHerd:horse.herd,date:localDate()}); }
+    await addPhotoFromFile(e.target.elements.photo.files?.[0],horse.id,birth||CURRENT_YEAR,'Ерөнхий зураг',id?'Нэмэлт зураг':'Анхны бүртгэлийн зураг'); addActivity('♞',id?'Адууны мэдээлэл шинэчиллээ':'Шинэ адуу бүртгэлээ',horse.display); save(); closeModal(); toast(id?'Өөрчлөлт хадгалагдлаа':'Адуу бүртгэгдлээ'); selectedHorseId=horse.id; currentView='horseDetail'; render(); return;
+  }
+  if(e.target.id==='raceForm'){
+    e.preventDefault(); const fd=new FormData(e.target); state.races.unshift({id:`R-${Date.now()}`,horseId:fd.get('horseId'),date:fd.get('date')||localDate(),event:fd.get('event')||'Уралдаан',category:fd.get('category'),place:+fd.get('place')||null,location:fd.get('location')||'',jockey:fd.get('jockey')||'',trainer:fd.get('trainer')||'',prize:fd.get('prize')||'',note:fd.get('note')||''}); addActivity('★','Уралдааны амжилт нэмлээ',state.horses.find(h=>h.id===fd.get('horseId'))?.display||'Хүлэг'); save(); closeModal(); toast('Амжилт хадгалагдлаа'); currentView='racing'; render(); return;
+  }
+  if(e.target.id==='photoForm'){
+    e.preventDefault(); const fd=new FormData(e.target),file=e.target.elements.photo.files?.[0]; if(!file){toast('Зураг сонгоно уу.');return;} await addPhotoFromFile(file,fd.get('horseId'),fd.get('year'),fd.get('type'),fd.get('caption')); const horse=state.horses.find(h=>h.id===fd.get('horseId')); addActivity('▣','Зураг нэмлээ',horse?.display||'Адуу'); save(); closeModal(); toast('Зураг амжилттай хадгалагдлаа'); currentView='gallery'; render(); return;
+  }
+  if(e.target.id==='brandForm'){
+    e.preventDefault(); const fd=new FormData(e.target),file=e.target.elements.brandImage.files?.[0]; const uploaded=file?await uploadPrivateImage(file,'brand'):null; const imageDataUrl=uploaded?.url||state.settings.familyBrand.imageDataUrl||''; const imagePath=uploaded?.path||state.settings.familyBrand.imagePath||''; state.settings.familyBrand={name:(fd.get('name')||'').trim(),defaultLocation:fd.get('defaultLocation')||'',description:fd.get('description')||'',imagePath,imageDataUrl}; addActivity('◆','Гэр бүлийн тамга хадгаллаа',state.settings.familyBrand.name); save(); closeModal(); toast('Тамга байнгын бүртгэлд хадгалагдлаа'); currentView='myBrand'; render(); return;
+  }
+  if(e.target.id==='brandingForm'){
+    e.preventDefault(); const fd=new FormData(e.target),horseIds=fd.getAll('horseIds'); if(!horseIds.length){toast('Тамгалсан адуунаас дор хаяж нэгийг сонгоно уу.');return;} const photoFile=e.target.elements.brandingPhoto.files?.[0],uploaded=photoFile?await uploadPrivateImage(photoFile,'brandings'):null,photoDataUrl=uploaded?.url||'',b={id:`B-${Date.now()}`,year:+fd.get('year'),date:fd.get('date'),brand:state.settings.familyBrand.name,location:fd.get('location')||state.settings.familyBrand.defaultLocation||'',horseIds,notes:fd.get('notes')||'',photoPath:uploaded?.path||'',photoDataUrl}; state.brandings.unshift(b); horseIds.forEach(id=>{const h=state.horses.find(x=>x.id===id);if(h)h.brand=`${b.brand}${b.location?` · ${b.location}`:''}`}); addActivity('⌗','Тамгалалт бүртгэлээ',`${b.year} он · ${horseIds.length} адуу`); save(); closeModal(); toast('Тамгалалтын бүртгэл хадгалагдлаа'); currentView='brandings'; render(); return;
+  }
+  if(e.target.id==='herdForm'){
+    e.preventDefault(); const fd=new FormData(e.target),name=(fd.get('name')||'').trim(); if(state.herds.some(h=>h.name.toLowerCase()===name.toLowerCase())){toast('Ийм нэртэй сүрэг бүртгэлтэй байна.');return;} const stallion=fd.get('stallion')||''; state.herds.push({id:`H-${Date.now()}`,name,stallion,startDate:fd.get('startDate')||'',isActive:true}); addActivity('♞','Шинэ сүрэг үүсгэлээ',name); save(); closeModal(); toast('Сүрэг үүсгэлээ'); currentView='herds'; render(); return;
+  }
+  if(e.target.id==='memberForm'){
+    e.preventDefault(); const fd=new FormData(e.target),username=normalizeUsername(fd.get('username')||''); if(state.members.some(m=>m.username.toLowerCase()===username.toLowerCase())){toast('Энэ username бүртгэлтэй байна.');return;}
+    const {data:{session}}=await authGetSession();
+    const res=await fetch(`${SUPABASE_URL}/functions/v1/create-family-member`,{method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_PUBLISHABLE_KEY,'Authorization':`Bearer ${session?.access_token||''}`},body:JSON.stringify({displayName:(fd.get('name')||'').trim(),username,password:fd.get('password')||'',role:fd.get('role')||'Editor'})});
+    const out=await res.json(); if(!res.ok){toast(out.error||'Хэрэглэгч нэмэхэд алдаа гарлаа');return;}
+    await loadCloudState(); closeModal(); toast('Хэрэглэгч нэмэгдлээ'); currentView='members'; syncShell(); render(); return;
+  }
+  if(e.target.id==='settingsForm'){
+    e.preventDefault(); const fd=new FormData(e.target); state.settings.appTitle=(fd.get('appTitle')||'Удмын Хүлэг').trim(); state.settings.familyTitle=(fd.get('familyTitle')||'').trim(); state.settings.registryPrefix=(fd.get('registryPrefix')||'A-').trim(); save(); syncShell(); toast('Тохиргоо хадгалагдлаа'); return;
+  }
+}
+
+function configureAuthLayer(){
+  const setup=needsInitialSetup;
+  $('#familyNameWrap').hidden=!setup;
+  $('#displayNameWrap').hidden=!setup;
+  $('#loginAction').textContent=setup?'Анхны админ үүсгэх':'Нэвтрэх';
+  $('#loginNote').textContent=setup
+    ? 'Анхны тохиргоо: гэр бүлийн нэр болон Admin хэрэглэгчээ үүсгэнэ үү.'
+    : 'Гэр бүлийн өөрийн username/password-аар нэвтэрнэ үү.';
+  $('#loginSubtitle').textContent=state.settings.familyTitle||'Гэр бүлийн адууны удмын сан';
+}
+async function checkSetupStatus(){
+  // Production family is already initialized. Default to normal login even if the
+  // setup-status request is temporarily unavailable. Only explicit needsSetup=true
+  // may switch the screen into first-admin setup mode.
+  needsInitialSetup=false;
+  try{
+    const res=await fetch(`${SUPABASE_URL}/functions/v1/family-setup-status`,{headers:{apikey:SUPABASE_PUBLISHABLE_KEY}});
+    const out=await res.json();
+    if(res.ok && out?.needsSetup===true) needsInitialSetup=true;
+  }catch(e){console.error('Setup status check failed; continuing with normal login.',e); needsInitialSetup=false;}
+  configureAuthLayer();
+}
+async function handleLogin(e){
+  e.preventDefault(); const username=normalizeUsername($('#username').value),password=$('#password').value; if(!username||!password){toast('Username болон нууц үгээ оруулна уу.');return;}
+  if(needsInitialSetup){
+    const familyName=$('#familyName').value.trim(),name=$('#displayName').value.trim(); if(!familyName){toast('Гэр бүлийн нэрийг оруулна уу.');return;} if(!name){toast('Таны нэрийг оруулна уу.');return;}
+    const res=await fetch(`${SUPABASE_URL}/functions/v1/bootstrap-family-admin`,{method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_PUBLISHABLE_KEY},body:JSON.stringify({familyName,displayName:name,username,password})}); const out=await res.json(); if(!res.ok){toast(out.error||'Анхны админ үүсгэхэд алдаа гарлаа');return;}
+    needsInitialSetup=false;
+  }
+  const {error}=await authSignIn(loginEmail(username),password); if(error){console.error('Auth failed',error);toast('Username эсвэл нууц үг буруу байна.');return;}
+  try{
+    const loaded=await loadCloudState();
+    if(!loaded) throw new Error('Cloud profile ачаалсангүй');
+    await startRealtime();
+    $('#loginLayer').classList.add('hidden'); syncShell(); toast('Тавтай морил'); render();
+  }catch(err){console.error('Post-login load failed',err);toast('Нэвтэрсэн боловч cloud мэдээлэл ачаалсангүй. Дахин оролдоно уу.');}
+}
+async function bootstrapApp(){
+  await checkSetupStatus();
+  const {data:{session}}=await authGetSession();
+  if(session){ try{await loadCloudState(); await startRealtime(); $('#loginLayer').classList.add('hidden');}catch(e){console.error(e); await authSignOut();} }
+  syncShell(); render();
+}
+
+document.addEventListener('submit',e=>{ if(e.target.id==='loginForm')return; handleSubmit(e).catch(err=>{console.error(err);toast('Хадгалах үед алдаа гарлаа.');}); });
+document.addEventListener('change',e=>{
+  const t=e.target;
+  if(t.matches('[data-inline-create]')){const key=t.dataset.inlineCreate,box=document.querySelector(`[data-inline-field="${key}"]`);if(box)box.hidden=t.value!=='__new__';}
+  if(t.id==='brandingYear')refreshBrandingChecklist(t.value);
+  if(t.id==='horseStatusSelect'){const inactive=t.value!==ACTIVE_STATUS,box=$('#statusTransition'),herd=$('#horseHerdSelect');if(box)box.hidden=!inactive;if(herd){herd.disabled=inactive;if(inactive)herd.value='';}}
+  if(t.name==='birthDate'){const el=$('#liveAge');if(el)el.textContent=t.value?`Нас: ${ageText(t.value)}`:'Огноо оруулахад нас автоматаар бодогдоно';}
+  if(t.type==='file'&&t.files?.[0]){const label=t.closest('.upload-live'),img=label?.querySelector('.upload-preview');if(img){const r=new FileReader();r.onload=()=>{img.src=r.result;img.hidden=false;label.classList.add('has-preview')};r.readAsDataURL(t.files[0]);}}
+});
+$('#closeModal').addEventListener('click',closeModal);
+$('#modalBackdrop').addEventListener('click',e=>{if(e.target.id==='modalBackdrop')closeModal()});
+$('#openQuickAdd').addEventListener('click',()=>showModal('Адуу нэмэх',`<div class="form-body"><div class="quick-grid"><button class="quick-option" onclick="openFoalForm()"><span>◌</span><strong>Шинэ унага</strong><small>Эх, эцэг, зүс, төрсөн огноогоор бүртгэнэ.</small></button><button class="quick-option" onclick="openHorseForm()"><span>♞</span><strong>Шинэ адуу</strong><small>Адууны үндсэн бүртгэл.</small></button><button class="quick-option" onclick="openBrandingForm()"><span>⌗</span><strong>Тамгалалт</strong><small>Жилийн унага болон нэмэлт адууг бүртгэнэ.</small></button><button class="quick-option" onclick="openRaceForm()"><span>★</span><strong>Уралдааны амжилт</strong><small>Байр, наадам, унаач, уяач.</small></button><button class="quick-option" onclick="openPhotoForm()"><span>▣</span><strong>Зураг</strong><small>Адууны зураг нэмнэ.</small></button></div></div>`));
+$('#sidebarAddHorse').addEventListener('click',()=>{if(!canEdit()){toast('Танд бүртгэл нэмэх эрх байхгүй.');return;}$('#openQuickAdd').click();closeSidebar();});
+$('#themeToggle').addEventListener('click',()=>applyTheme(getTheme()==='dark'?'light':'dark',true));
+$('#quickPhotoBtn').addEventListener('click',()=>openPhotoForm());
+$('#loginForm').addEventListener('submit',e=>handleLogin(e).catch(err=>{console.error(err);toast('Нэвтрэх үед алдаа гарлаа.');}));
+$('#logoutBtn').addEventListener('click',async()=>{if(realtimeChannel){clearInterval(realtimeChannel);realtimeChannel=null;} await authSignOut();currentUserId='';currentFamilyId='';deletedArchive=[];state=structuredClone(seed);$('#loginLayer').classList.remove('hidden');await checkSetupStatus();syncShell();render();});
+$$('.nav-item[data-view]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.view)));
+$('#mobileMenu').addEventListener('click',()=>$('#sidebar').classList.toggle('open'));
+function closeSidebar(){if(innerWidth<861)$('#sidebar').classList.remove('open')}
+$('#globalSearch').addEventListener('input',e=>{const q=e.target.value.toLowerCase().trim();if(q.length>1){currentView='horses';render();$$('.data-table tbody tr').forEach(r=>r.style.display=r.textContent.toLowerCase().includes(q)?'':'none')}});
+
+bootstrapApp().catch(err=>{console.error(err);toast('App эхлүүлэх үед алдаа гарлаа.');});
+
+</script>
+</body>
+</html>
