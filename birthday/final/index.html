@@ -1,30 +1,56 @@
-<!doctype html><html lang="mn"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#FAF9F6"><title>Оюунзаяа эгчээ — төрсөн өдрийн мэнд</title><style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#FAF9F6}iframe{display:block;border:0;width:100%;height:100svh;background:#FAF9F6}</style><script src="./assets/hq_part1.js"></script><script src="./assets/hq_part2.js"></script><script src="./assets/hq_part3.js"></script><script src="./assets/hq_part4.js"></script></head><body><iframe id="site" src="../?v=genz-final-gift-hq" allow="autoplay; fullscreen"></iframe><script>
+<!doctype html><html lang="mn"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#FAF9F6"><title>Оюунзаяа эгчээ — төрсөн өдрийн мэнд</title><style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#FAF9F6}iframe{display:block;border:0;width:100%;height:100svh;background:#FAF9F6}</style></head><body><iframe id="site" src="../?v=genz-final-photos-now" allow="autoplay; fullscreen"></iframe><script>
 const f=document.getElementById('site');
 const PHOTO_CAPS=['Central Perk era','iconic','helmet arc','Shanghai night','random day','core memory','0.5x energy','room chaos','close enough 😂','fashion week at home'];
 const FLOWER_IMG='https://crownfloristic.com/cdn/shop/files/ED1F89D2-81C9-4CD6-85CB-0F4DA1CD3196.png?v=1760049673';
 const RIO_IMG_1='https://image.suning.cn/uimg/b2c/newcatentries/0070146523-000000000737810389_1.jpg_800w_800h_4e_80Q_is';
 const RIO_IMG_2='https://www.umall.com.au/cdn/shop/files/1_daef5d9d-8a23-4e1d-a997-ea4efa753c50.jpg?v=1758286608';
 function txt(el,s){if(el)el.textContent=s}
-function loadHQ(){
-  const items=[...(window.HQ_PHOTOS_PART1||[]),...(window.HQ_PHOTOS_PART2||[]),...(window.HQ_PHOTOS_PART3||[]),...(window.HQ_PHOTOS_PART4||[])];
-  if(items.length!==10) throw new Error('HQ photos '+items.length);
-  return items;
+async function fetchPhotoText(url){
+  const r=await fetch(url,{cache:'force-cache'});
+  if(!r.ok) throw new Error(url+' '+r.status);
+  const b64=(await r.text()).replace(/\s+/g,'');
+  if(!b64) throw new Error('empty '+url);
+  const mime=b64.startsWith('UklGR')?'image/webp':(b64.startsWith('iVBOR')?'image/png':'image/jpeg');
+  return `data:${mime};base64,${b64}`;
 }
-function ensurePhotos(d){
+async function loadPhotos(){
+  const urls=[
+    '../assets/p1.txt','../assets/p2.txt','../assets/p3.txt','../assets/p4.txt','../assets/p5.txt','../assets/p6.txt',
+    'https://happy-birthday-oyunzaya-v2.vercel.app/p7.txt',
+    'https://happy-birthday-oyunzaya-v2.vercel.app/p8.txt',
+    'https://happy-birthday-oyunzaya-v2.vercel.app/p9.txt',
+    'https://happy-birthday-oyunzaya-v2.vercel.app/p10.txt'
+  ];
+  const fallback=i=>`https://happy-birthday-oyunzaya-v2.vercel.app/p${i+1}.txt`;
+  const out=[];
+  for(let i=0;i<urls.length;i++){
+    try{out.push(await fetchPhotoText(urls[i]));}
+    catch(e){out.push(await fetchPhotoText(fallback(i)));}
+  }
+  const seen=new Set();
+  return out.filter(src=>{if(seen.has(src))return false;seen.add(src);return true;});
+}
+async function ensurePhotos(d){
   const holder=d.querySelector('#photos'); if(!holder)return;
   const sec=holder.closest('section'); if(sec)sec.style.display='block';
-  if(holder.dataset.finalPhotos==='hq10'&&holder.children.length===10)return;
+  if(holder.dataset.finalPhotos==='ready')return;
+  if(holder.dataset.loading==='1')return;
+  holder.dataset.loading='1';
+  holder.innerHTML='<div style="padding:22px;color:#8d8881;font-size:12px">зурагнууд ачаалж байна…</div>';
   try{
-    const items=loadHQ();
+    const items=await loadPhotos();
     holder.innerHTML='';
     items.forEach((src,i)=>{
       const b=d.createElement('button'); b.className='photo rv in'; b.type='button';
-      b.innerHTML=`<img src="${src}" alt="memory ${i+1}" loading="lazy" decoding="async"><span class="cap">${PHOTO_CAPS[i]}</span><span class="num">${String(i+1).padStart(2,'0')}</span>`;
+      b.innerHTML=`<img src="${src}" alt="memory ${i+1}" loading="lazy" decoding="async"><span class="cap">${PHOTO_CAPS[i]||'memory'}</span><span class="num">${String(i+1).padStart(2,'0')}</span>`;
       b.onclick=()=>{const overlay=d.querySelector('#lightbox,.light');const img=d.querySelector('#lbImg,.light img');if(overlay&&img){img.src=src;overlay.classList.add('on');d.body.classList.add('lock')}};
       holder.appendChild(b);
     });
-    holder.dataset.finalPhotos='hq10';
-  }catch(e){holder.innerHTML='<div style="padding:24px;color:#8d8881;font-size:12px">Зураг ачаалалт саатлаа. Refresh хийгээд үзээрэй.</div>';console.error(e)}
+    holder.dataset.finalPhotos='ready';
+  }catch(e){
+    holder.innerHTML='<div style="padding:24px;color:#8d8881;font-size:12px">Зураг ачаалалт саатлаа. Refresh хийгээд үзээрэй.</div>';
+    console.error(e)
+  } finally {holder.dataset.loading='0';}
 }
 function ensureGift(d){
   if(d.getElementById('finalGiftSection'))return;
