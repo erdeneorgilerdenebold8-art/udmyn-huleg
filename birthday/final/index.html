@@ -1,4 +1,4 @@
-<!doctype html><html lang="mn"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#FAF9F6"><title>Оюунзаяа эгчээ — төрсөн өдрийн мэнд</title><style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#FAF9F6}iframe{display:block;border:0;width:100%;height:100svh;background:#FAF9F6}</style></head><body><iframe id="site" src="../?v=genz-final-5" allow="autoplay; fullscreen"></iframe><script>
+<!doctype html><html lang="mn"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#FAF9F6"><title>Оюунзаяа эгчээ — төрсөн өдрийн мэнд</title><style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#FAF9F6}iframe{display:block;border:0;width:100%;height:100svh;background:#FAF9F6}</style></head><body><iframe id="site" src="../?v=genz-final-6" allow="autoplay; fullscreen"></iframe><script>
 const f=document.getElementById('site');
 const PHOTO_CAPS=['good times','random day','iconic','night out','core memory','not bad tbh','random memory','this one 😂','good one','more soon'];
 function txt(el,s){if(el)el.textContent=s}
@@ -14,7 +14,7 @@ async function ensurePhotos(d){
     holder.innerHTML='';
     items.forEach((src,i)=>{
       const b=d.createElement('button'); b.className='photo rv in'; b.type='button';
-      b.innerHTML=`<img src="${src}" alt="memory ${i+1}" loading="lazy"><span class="cap">${PHOTO_CAPS[i]}</span><span class="num">${String(i+1).padStart(2,'0')}</span>`;
+      b.innerHTML=`<img src="${src}" alt="memory ${i+1}" loading="lazy" decoding="async"><span class="cap">${PHOTO_CAPS[i]}</span><span class="num">${String(i+1).padStart(2,'0')}</span>`;
       b.onclick=()=>{
         const overlay=d.querySelector('#lightbox,.light');
         const img=d.querySelector('#lbImg,.light img');
@@ -31,14 +31,15 @@ function patch(){try{
     const style=d.createElement('style');style.id='finalTonePatch';style.textContent=`
       .card:before{content:'for you'!important}
       .card blockquote,.orig,.mn,.author{display:none!important}
-      .photo{display:inline-block!important;visibility:visible!important;opacity:1!important}
+      .photo{display:inline-block!important;visibility:visible!important;opacity:1!important;transform:none!important;filter:none!important}
+      .photo img{width:100%!important;height:auto!important;object-fit:contain!important;filter:none!important;transform:none!important;image-rendering:auto!important}
       #photos{display:block!important;min-height:120px!important}
     `;d.head.appendChild(style)
   }
   const msg=d.querySelector('#message,.card');
   if(msg){
     const isMessage = msg.id==='message' || msg.classList.contains('card');
-    if(isMessage) msg.innerHTML=`<p class="greet">Төрсөн өдрийн мэнд ээ, эгчээ 🎂</p><p>Шинэ нас чинь яг өөрт чинь таалагддаг хүмүүс, газрууд, мөчүүдээр дүүрэн байг.</p><p>Хүссэн зүйлээ хойшлуулахгүй авдаг, очмоор газраа очдог, random азтай өдрүүд нь олон жил байгаарай.</p><p>Мөнгө их, stress бага 😂 Өнөөдөр бол гоё хоол идээд, зургаа аваад, өөрийгөө жаахан эрхлүүлээрэй 🤍</p><div class="foot"><span>from your дүү</span><span>28.08.2026</span></div>`;
+    if(isMessage) msg.innerHTML=`<p class="greet">Төрсөн өдрийн мэнд ээ, эгчээ 🎂</p><p>Шинэ насандаа эрүүл, аз жаргалтай, мөнгөтэй 😂 байгаарай.</p><p>Хүссэн юмаа хийдэг, хүссэн газраа явдаг, хэрэггүй юманд нервтэхгүй жил байг.</p><p>За тэгээд level +1. That's it 😂</p><div class="foot"><span>from your дүү</span><span>28.08.2026</span></div>`;
     const sec=msg.closest('section'); if(sec){const e=sec.querySelector('.ey,.eyebrow');if(e)e.textContent='birthday note';}
   }
   d.querySelectorAll('section').forEach(sec=>{
@@ -46,11 +47,11 @@ function patch(){try{
     if(t.includes('хадгалаад авмаар')||t.includes('worth keeping')||t.includes('forever is composed')||t.includes('ralph waldo')||t.includes('emily dickinson')||t.includes('walt whitman')) sec.remove();
   });
   const hidden=d.querySelector('#hidden');
-  if(hidden)hidden.innerHTML='<span class="ey">one extra thing</span><b>за нэг юм хэлчихье… +</b><div>Яг хэлээд байдаггүй ч, миний хувьд нэлээн дотно хүн шүү. За ингээд serious mode off 😂</div>';
+  if(hidden)hidden.innerHTML='<span class="ey">one extra thing</span><b>за нэг юм хэлчихье… +</b><div>Хааяа хэлдэггүй л болохоос, нэлээн дотно шүү. За ингээд emotional quota дууслаа 😂</div>';
   const fx=d.querySelector('#wishfx');
   if(fx){const h=fx.querySelector('h4'),p=fx.querySelector('p'),b=fx.querySelector('#fxClose');txt(h,'за нэг юм асууя 😂');if(p)p.innerHTML='арай Rio хүсээгүй биз? 😂<br>эсвэл billiard дээрээ сайжирмаар байна гэж хүсээгүй биз хаха';txt(b,'за больё 😂')}
   const last=d.querySelector('.last');
-  if(last)last.innerHTML='<div class="ey rv in">one last thing</div><p class="rv in">Өнөөдрөө гоё өнгөрүүлээрэй.</p><h3 class="rv in">төрсөн өдрийн мэнд, эгчээ 🤍</h3>';
+  if(last)last.innerHTML='<div class="ey rv in">okay that’s it</div><p class="rv in">за ингээд дууслаа 😂</p><h3 class="rv in">төрсөн өдрийн мэнд, эгчээ 🎂</h3>';
   const end=d.querySelector('.end');
   if(end){const p=end.querySelector('p');if(p)p.remove();const small=end.querySelector('small');if(small&&/made|favorite|дүү|hopefully/i.test(small.textContent))small.remove();}
   d.querySelectorAll('footer').forEach(x=>x.remove());
