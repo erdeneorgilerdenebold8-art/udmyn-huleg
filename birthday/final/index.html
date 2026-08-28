@@ -1,1 +1,60 @@
-<!doctype html><html lang="mn"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#FAF9F6"><title>Оюунзаяа эгчээ — төрсөн өдрийн мэнд</title><style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#FAF9F6}iframe{display:block;border:0;width:100%;height:100svh;background:#FAF9F6}</style></head><body><iframe id="site" src="../?v=genz-final-3" allow="autoplay; fullscreen"></iframe><script>const f=document.getElementById('site');function patch(){try{const d=f.contentDocument;if(!d||!d.body)return;const style=d.createElement('style');style.textContent='.note-card:before{content:"just for today"!important}.quote-card span,.quote-card cite,.last-author{display:none!important}.quote-card strong{font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif!important;font-size:21px!important;font-weight:700!important;line-height:1.35!important}.note-card blockquote{display:none!important}';if(!d.getElementById('genzPatchStyle')){style.id='genzPatchStyle';d.head.appendChild(style)}const msg=d.querySelector('#message');if(msg)msg.innerHTML='<p class="greeting-line">Төрсөн өдрийн мэнд ээ, эгчээ 🤍</p><p>Шинэ насандаа яг хүссэнээрээ амьдардаг, очмоор газраа очдог, авахыг хүссэн юмаа авдаг байгаарай 😂</p><p>Хэрэггүй stress бага, гоё хүмүүс их, random азтай мөчүүд олон байг.</p><p>Өнөөдрөө зүгээр л гоё өнгөрүүл. cake-аа ид. зургаа ав. enjoy 😌</p><div class="foot"><span>from your дүү</span><span>28.08.2026</span></div>';const msec=msg&&msg.closest('section');if(msec){const e=msec.querySelector('.eyebrow');if(e)e.textContent='just saying'}const q=d.querySelector('#quotes');if(q){const sec=q.closest('section');const e=sec.querySelector('.eyebrow');const h=sec.querySelector('.title');if(e)e.textContent='2026 wishlist';if(h)h.innerHTML='энэ жилдээ:';q.innerHTML='<article class="quote-card reveal in"><strong>илүү их аялал, бага stress.</strong></article><article class="quote-card reveal in"><strong>мөнгө нь хүрдэг биш — илүүддэг жил байг 😂</strong></article><article class="quote-card reveal in"><strong>“өнөөдөр гоё байлаа” гэж бодоод унтдаг өдөр олон байг.</strong></article>'}const hidden=d.querySelector('#hidden');if(hidden)hidden.innerHTML='<span class="eyebrow">okay one more thing</span><b>за нэг үнэн юм хэлчихье… +</b><div>Хааяа хэлдэггүй л болохоос танд нэлээн хайртай шүү 😂<br>за энэ хэсгийг screenshot хийж болохгүй.</div>';const fx=d.querySelector('#wishfx');if(fx){const h=fx.querySelector('h4'),p=fx.querySelector('p'),b=fx.querySelector('#fxClose');if(h)h.textContent='wish saved.';if(p)p.innerHTML='арай Rio хүсээгүй биз? 😂<br>эсвэл billiard дээрээ сайжирмаар байна гэж хүсээгүй биз хаха<br><br>юу ч хүссэн байсан secret хэвээр нь үлдээе 🤝';if(b)b.textContent='за за 😂'}const last=d.querySelector('.last');if(last)last.innerHTML='<div class="eyebrow reveal in">one last thing</div><p class="reveal in">За ингээд энэ site-г хийсэн болохоор<br>birthday gift-ийн quota-гаа хаалаа гэж бодъё 😂</p><h3 class="reveal in">төрсөн өдрийн мэнд, эгчээ 🤍</h3>';d.querySelectorAll('*').forEach(el=>{if(el.childNodes.length===1&&el.firstChild.nodeType===3&&/Ralph Waldo|Emily Dickinson|Walt Whitman/.test(el.textContent))el.style.display='none'})}catch(e){}}f.addEventListener('load',()=>{patch();let n=0;const t=setInterval(()=>{patch();if(++n>12)clearInterval(t)},250)});</script></body></html>
+<!doctype html><html lang="mn"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#FAF9F6"><title>Оюунзаяа эгчээ — төрсөн өдрийн мэнд</title><style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#FAF9F6}iframe{display:block;border:0;width:100%;height:100svh;background:#FAF9F6}</style></head><body><iframe id="site" src="../?v=genz-final-5" allow="autoplay; fullscreen"></iframe><script>
+const f=document.getElementById('site');
+const PHOTO_CAPS=['good times','random day','iconic','night out','core memory','not bad tbh','random memory','this one 😂','good one','more soon'];
+function txt(el,s){if(el)el.textContent=s}
+async function ensurePhotos(d){
+  const holder=d.querySelector('#photos'); if(!holder)return;
+  const sec=holder.closest('section'); if(sec)sec.style.display='block';
+  if(holder.dataset.finalPhotos==='1' && holder.children.length===10)return;
+  try{
+    const items=await Promise.all(Array.from({length:10},async(_,i)=>{
+      const r=await fetch(`https://happy-birthday-oyunzaya-v2.vercel.app/p${i+1}.txt`); if(!r.ok)throw new Error('photo');
+      return 'data:image/jpeg;base64,'+(await r.text()).trim();
+    }));
+    holder.innerHTML='';
+    items.forEach((src,i)=>{
+      const b=d.createElement('button'); b.className='photo rv in'; b.type='button';
+      b.innerHTML=`<img src="${src}" alt="memory ${i+1}" loading="lazy"><span class="cap">${PHOTO_CAPS[i]}</span><span class="num">${String(i+1).padStart(2,'0')}</span>`;
+      b.onclick=()=>{
+        const overlay=d.querySelector('#lightbox,.light');
+        const img=d.querySelector('#lbImg,.light img');
+        if(overlay&&img){img.src=src;overlay.classList.add('on');d.body.classList.add('lock')}
+      };
+      holder.appendChild(b);
+    });
+    holder.dataset.finalPhotos='1';
+  }catch(e){}
+}
+function patch(){try{
+  const d=f.contentDocument;if(!d||!d.body)return;
+  if(!d.getElementById('finalTonePatch')){
+    const style=d.createElement('style');style.id='finalTonePatch';style.textContent=`
+      .card:before{content:'for you'!important}
+      .card blockquote,.orig,.mn,.author{display:none!important}
+      .photo{display:inline-block!important;visibility:visible!important;opacity:1!important}
+      #photos{display:block!important;min-height:120px!important}
+    `;d.head.appendChild(style)
+  }
+  const msg=d.querySelector('#message,.card');
+  if(msg){
+    const isMessage = msg.id==='message' || msg.classList.contains('card');
+    if(isMessage) msg.innerHTML=`<p class="greet">Төрсөн өдрийн мэнд ээ, эгчээ 🎂</p><p>Шинэ нас чинь яг өөрт чинь таалагддаг хүмүүс, газрууд, мөчүүдээр дүүрэн байг.</p><p>Хүссэн зүйлээ хойшлуулахгүй авдаг, очмоор газраа очдог, random азтай өдрүүд нь олон жил байгаарай.</p><p>Мөнгө их, stress бага 😂 Өнөөдөр бол гоё хоол идээд, зургаа аваад, өөрийгөө жаахан эрхлүүлээрэй 🤍</p><div class="foot"><span>from your дүү</span><span>28.08.2026</span></div>`;
+    const sec=msg.closest('section'); if(sec){const e=sec.querySelector('.ey,.eyebrow');if(e)e.textContent='birthday note';}
+  }
+  d.querySelectorAll('section').forEach(sec=>{
+    const t=(sec.textContent||'').toLowerCase();
+    if(t.includes('хадгалаад авмаар')||t.includes('worth keeping')||t.includes('forever is composed')||t.includes('ralph waldo')||t.includes('emily dickinson')||t.includes('walt whitman')) sec.remove();
+  });
+  const hidden=d.querySelector('#hidden');
+  if(hidden)hidden.innerHTML='<span class="ey">one extra thing</span><b>за нэг юм хэлчихье… +</b><div>Яг хэлээд байдаггүй ч, миний хувьд нэлээн дотно хүн шүү. За ингээд serious mode off 😂</div>';
+  const fx=d.querySelector('#wishfx');
+  if(fx){const h=fx.querySelector('h4'),p=fx.querySelector('p'),b=fx.querySelector('#fxClose');txt(h,'за нэг юм асууя 😂');if(p)p.innerHTML='арай Rio хүсээгүй биз? 😂<br>эсвэл billiard дээрээ сайжирмаар байна гэж хүсээгүй биз хаха';txt(b,'за больё 😂')}
+  const last=d.querySelector('.last');
+  if(last)last.innerHTML='<div class="ey rv in">one last thing</div><p class="rv in">Өнөөдрөө гоё өнгөрүүлээрэй.</p><h3 class="rv in">төрсөн өдрийн мэнд, эгчээ 🤍</h3>';
+  const end=d.querySelector('.end');
+  if(end){const p=end.querySelector('p');if(p)p.remove();const small=end.querySelector('small');if(small&&/made|favorite|дүү|hopefully/i.test(small.textContent))small.remove();}
+  d.querySelectorAll('footer').forEach(x=>x.remove());
+  ensurePhotos(d);
+}catch(e){}}
+f.addEventListener('load',()=>{patch();let n=0;const t=setInterval(()=>{patch();if(++n>18)clearInterval(t)},300)});
+</script></body></html>
