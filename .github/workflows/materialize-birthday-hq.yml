@@ -1,0 +1,39 @@
+name: Materialize birthday HQ
+on:
+  push:
+    paths:
+      - '.github/workflows/materialize-birthday-hq.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Inspect and materialize
+        shell: bash
+        run: |
+          set -e
+          mkdir -p birthday/final/photos
+          base64 -d birthday/final/assets/photo1_1000.b64 > /tmp/p1.bin || true
+          base64 -d birthday/final/assets/photo2_1000.b64 > /tmp/p2.bin || true
+          cat birthday/final/assets/photos3_10_chunk1.b64 birthday/final/assets/photos3_10_chunk2.b64 | base64 -d > /tmp/p310.bin || true
+          echo 'P1:'; file /tmp/p1.bin; xxd -l 16 /tmp/p1.bin
+          echo 'P2:'; file /tmp/p2.bin; xxd -l 16 /tmp/p2.bin
+          echo 'P3-10:'; file /tmp/p310.bin; xxd -l 16 /tmp/p310.bin
+          if file /tmp/p1.bin | grep -qi 'Web/P image'; then cp /tmp/p1.bin birthday/final/photos/photo1.webp; fi
+          if file /tmp/p1.bin | grep -qi 'JPEG'; then cp /tmp/p1.bin birthday/final/photos/photo1.jpg; fi
+          if file /tmp/p2.bin | grep -qi 'Web/P image'; then cp /tmp/p2.bin birthday/final/photos/photo2.webp; fi
+          if file /tmp/p2.bin | grep -qi 'JPEG'; then cp /tmp/p2.bin birthday/final/photos/photo2.jpg; fi
+          if file /tmp/p310.bin | grep -qi 'Zip archive'; then unzip -o /tmp/p310.bin -d birthday/final/photos; fi
+          find birthday/final/photos -maxdepth 2 -type f -print -exec file {} \;
+      - name: Commit
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add birthday/final/photos
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'Materialize birthday HQ static images'
+          git push
