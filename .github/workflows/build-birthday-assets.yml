@@ -1,0 +1,70 @@
+name: Build Birthday Assets
+
+on:
+  push:
+    paths:
+      - '.github/workflows/build-birthday-assets.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  build-assets:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Materialize the 10 birthday photos
+        shell: bash
+        run: |
+          mkdir -p birthday/final/photos birthday/final/gift
+          node <<'NODE'
+          const fs = require('fs');
+          const vm = require('vm');
+          global.window = global;
+          for (let i = 1; i <= 4; i++) {
+            const p = `birthday/final/assets/hq_part${i}.js`;
+            vm.runInThisContext(fs.readFileSync(p, 'utf8'), { filename: p });
+          }
+          const photos = [
+            ...(global.HQ_PHOTOS_PART1 || []),
+            ...(global.HQ_PHOTOS_PART2 || []),
+            ...(global.HQ_PHOTOS_PART3 || []),
+            ...(global.HQ_PHOTOS_PART4 || [])
+          ];
+          if (photos.length !== 10) throw new Error(`Expected 10 photos, got ${photos.length}`);
+          photos.forEach((url, index) => {
+            const m = url.match(/^data:image\/(webp|jpeg|jpg|png);base64,(.+)$/s);
+            if (!m) throw new Error(`Invalid data URL for photo ${index + 1}`);
+            const ext = m[1] === 'jpeg' || m[1] === 'jpg' ? 'jpg' : m[1];
+            fs.writeFileSync(`birthday/final/photos/photo${index + 1}.${ext}`, Buffer.from(m[2], 'base64'));
+          });
+          console.log(`Wrote ${photos.length} static photo files`);
+          NODE
+
+      - name: Download real gift images
+        shell: bash
+        run: |
+          curl -L --fail --retry 3 --connect-timeout 20 \
+            'https://www.richrose.ae/resources/assets/uploads/product/2024-10-035816318.webp' \
+            -o birthday/final/gift/flowers.webp
+          curl -L --fail --retry 3 --connect-timeout 20 \
+            'https://www.wine0222.com/upload/Rio%E5%BE%AE%E9%86%BA%E7%99%BD%E6%A1%83%E9%9B%9E%E5%B0%BE%E9%85%92.png' \
+            -o birthday/final/gift/rio-peach.png
+          curl -L --fail --retry 3 --connect-timeout 20 \
+            'https://cdn.shopify.com/s/files/1/0060/6067/1058/products/RioStrongLime500mL_grande.png?v=1606887022' \
+            -o birthday/final/gift/rio-lime.png
+          file birthday/final/gift/* birthday/final/photos/*
+
+      - name: Commit generated static assets
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add birthday/final/photos birthday/final/gift
+          if git diff --cached --quiet; then
+            echo 'No asset changes to commit'
+          else
+            git commit -m 'Materialize birthday photos and gift images'
+            git push
+          fi
