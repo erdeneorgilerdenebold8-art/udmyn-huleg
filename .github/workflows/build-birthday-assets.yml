@@ -14,37 +14,40 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Materialize the 10 birthday photos
+      - name: Materialize all 10 HQ birthday photos
         shell: bash
         run: |
+          set -euo pipefail
           mkdir -p birthday/final/photos birthday/final/gift
+          curl -L --fail --retry 3 --connect-timeout 20 \
+            'https://happy-birthday-oyunzaya-v4-fixed.vercel.app/?hq=1' \
+            -o /tmp/oyunzaya-hq-bundle.html
           node <<'NODE'
           const fs = require('fs');
-          const vm = require('vm');
-          global.window = global;
-          for (let i = 1; i <= 4; i++) {
-            const p = `birthday/final/assets/hq_part${i}.js`;
-            vm.runInThisContext(fs.readFileSync(p, 'utf8'), { filename: p });
-          }
-          const photos = [
-            ...(global.HQ_PHOTOS_PART1 || []),
-            ...(global.HQ_PHOTOS_PART2 || []),
-            ...(global.HQ_PHOTOS_PART3 || []),
-            ...(global.HQ_PHOTOS_PART4 || [])
-          ];
-          if (photos.length !== 10) throw new Error(`Expected 10 photos, got ${photos.length}`);
-          photos.forEach((url, index) => {
-            const m = url.match(/^data:image\/(webp|jpeg|jpg|png);base64,(.+)$/s);
-            if (!m) throw new Error(`Invalid data URL for photo ${index + 1}`);
-            const ext = m[1] === 'jpeg' || m[1] === 'jpg' ? 'jpg' : m[1];
-            fs.writeFileSync(`birthday/final/photos/photo${index + 1}.${ext}`, Buffer.from(m[2], 'base64'));
+          const zlib = require('zlib');
+          const boot = fs.readFileSync('/tmp/oyunzaya-hq-bundle.html', 'utf8');
+          const payload = boot.match(/atob\('([^']+)'\)/);
+          if (!payload) throw new Error('HQ bundle payload not found');
+          const html = zlib.gunzipSync(Buffer.from(payload[1], 'base64')).toString('utf8');
+          const urls = [...html.matchAll(/data:image\/(avif|jpeg|jpg|webp|png);base64,[A-Za-z0-9+/=]+/g)].map(m => m[0]).slice(0, 10);
+          if (urls.length !== 10) throw new Error(`Expected 10 HQ photos, got ${urls.length}`);
+          urls.forEach((url, index) => {
+            const m = url.match(/^data:image\/(avif|jpeg|jpg|webp|png);base64,(.+)$/s);
+            const ext = (m[1] === 'jpeg' || m[1] === 'jpg') ? 'jpg' : m[1];
+            const path = `birthday/final/photos/photo${index + 1}.${ext}`;
+            fs.writeFileSync(path, Buffer.from(m[2], 'base64'));
+            console.log(path, fs.statSync(path).size, 'bytes');
           });
-          console.log(`Wrote ${photos.length} static photo files`);
+          fs.writeFileSync('birthday/final/photos/manifest.json', JSON.stringify(urls.map((u,i) => {
+            const type = u.match(/^data:image\/(avif|jpeg|jpg|webp|png);base64,/)[1];
+            return { n:i+1, file:`photo${i+1}.${type === 'jpeg' || type === 'jpg' ? 'jpg' : type}` };
+          }), null, 2));
           NODE
 
       - name: Download real gift images
         shell: bash
         run: |
+          set -euo pipefail
           curl -L --fail --retry 3 --connect-timeout 20 \
             'https://www.richrose.ae/resources/assets/uploads/product/2024-10-035816318.webp' \
             -o birthday/final/gift/flowers.webp
@@ -65,6 +68,6 @@ jobs:
           if git diff --cached --quiet; then
             echo 'No asset changes to commit'
           else
-            git commit -m 'Materialize birthday photos and gift images'
+            git commit -m 'Materialize all HQ birthday photos and gift images'
             git push
           fi
